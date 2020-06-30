@@ -1,4 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
+import Button from './button.tsx';
 
-console.log(React, ReactDOM);
+ReactDOM.render(<Button>button</Button>, document.body);
+
+console.log(React, ReactDOM, Button);
