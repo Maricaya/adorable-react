@@ -6,6 +6,12 @@ module.exports = {
   entry: {
     index: './lib/index.tsx'
   },
+  resolve: {
+    /*
+    * extensions 有哪些后缀是需要支持的
+    * */
+    extensions: ['.ts', '.tsx', '.js', '.jsx']
+  },
   output: {
     path: path.resolve(__dirname, 'dist/lib'),
     library: 'FUI',
@@ -27,5 +33,20 @@ module.exports = {
       title: "Xue - React",
       template: "index.html"
     })
-  ]
+  ],
+  // 将 react 从我们的源代码中排出去
+  externals: {
+    react: {
+      commonjs: 'react', // 依赖的时候如何依赖
+      commonjs2: 'react',
+      amd: 'react',
+      root: 'React'
+    },
+    'react-dom': {
+      commonjs: 'react-dom',
+      commonjs2: 'react-dom',
+      amd: 'react-dom',
+      root: 'ReactDom'
+    }
+  }
 }
