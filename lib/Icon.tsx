@@ -7,11 +7,10 @@ type IconProps = {
     name: string;
 } & React.SVGAttributes<SVGElement>
 
-const Icon: React.FunctionComponent<IconProps> = (props) => {
-    const {className, ...restProps} = props;
+const Icon: React.FunctionComponent<IconProps> = ({className, name, ...restProps}) => {
     return (<span>
         <svg className={classes(`xue-icon`, className)} {...restProps}>
-            <use xlinkHref={`#${props.name}`}/>
+            <use xlinkHref={`#${name}`}/>
         </svg>
     </span>);
 };
