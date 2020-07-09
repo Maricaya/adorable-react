@@ -1,6 +1,6 @@
 {
-  "name": "xue-react",
-  "version": "1.0.0",
+  "name": "adorable-react",
+  "version": "0.0.1",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index",
   "files": [
