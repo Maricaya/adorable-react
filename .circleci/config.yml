@@ -1,4 +1,5 @@
 #https://github.com/revolunet/create-react-app-circleci/blob/master/.circleci/config.yml
+# 给当前node_modules 一个快照，如果 package.json 没变，node_modules 就不用重新下载
 defaults: &defaults
   docker:
     - image: circleci/node:8
@@ -11,12 +12,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v2-dependencies-{{ checksum "package.json" }}
       - run: yarn install
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v2-dependencies-{{ checksum "package.json" }}
       - persist_to_workspace:
           root: .
           paths:
@@ -32,6 +33,9 @@ jobs:
           root: .
           paths:
             - dist
+            - package.json
+            - LICENSE
+            - README.md
   test:
     <<: *defaults
     steps:
@@ -41,6 +45,13 @@ jobs:
       - run: yarn ci
       - store_test_results:
           path: test-results
+  publish:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+      - run: npm publish
 
 workflows:
   version: 2
@@ -53,3 +64,11 @@ workflows:
       - test:
           requires:
             - prepare
+      - publish:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
