@@ -2,7 +2,7 @@
 # 给当前node_modules 一个快照，如果 package.json 没变，node_modules 就不用重新下载
 defaults: &defaults
   docker:
-    - image: circleci/node:8
+    - image: circleci/node:12.18.2
 
 version: 2
 jobs:
