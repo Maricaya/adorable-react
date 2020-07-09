@@ -42,7 +42,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: npm run test --u
+      - run: npm run test -- -u
       - store_test_results:
           path: test-results
   publish:
