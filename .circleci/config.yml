@@ -42,7 +42,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: npm run ci
+      - run: npm run ci -- -u
       - store_test_results:
           path: test-results
   publish:
