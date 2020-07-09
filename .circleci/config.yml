@@ -42,7 +42,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: npm run test -- -u
+      - run: npm run test
       - store_test_results:
           path: test-results
   publish:
@@ -70,6 +70,7 @@ workflows:
           requires:
             - build
           filters:
+# 所有 branches 都忽略，只部署 vx.x.x 的 tags
             tags:
               only: /^v[0-9]+(\.[0-9]+)*/
             branches:
