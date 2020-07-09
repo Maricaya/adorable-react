@@ -13,7 +13,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-dependencies-{{ checksum "package.json" }}
-      - run: yarn install
+      - run: npm install
       - save_cache:
           paths:
             - node_modules
@@ -28,20 +28,32 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: yarn build
+      - run: npm run build
       - persist_to_workspace:
           root: .
           paths:
             - dist
+            - package.json
+            - LICENSE
+            - README.md
   test:
     <<: *defaults
     steps:
       - checkout
       - attach_workspace:
           at: .
-      - run: yarn ci
+      - run: npm run test
       - store_test_results:
           path: test-results
+  publish:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+      - run: npm publish
+
+
 
 workflows:
   version: 2
@@ -54,3 +66,11 @@ workflows:
       - test:
           requires:
             - prepare
+      - publish:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
