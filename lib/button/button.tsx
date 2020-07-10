@@ -1,11 +1,16 @@
 import * as React from 'react';
+import './button.scss';
 
-function Button() {
+type Props = {
+  name?: string;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>
+
+const Button: React.FunctionComponent<Props> = (props) => {
     return (
         <button>
-            按钮
+          {props.children}
         </button>
     )
-}
+};
 
 export default Button;

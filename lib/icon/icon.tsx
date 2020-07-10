@@ -8,11 +8,11 @@ type IconProps = {
 } & React.SVGAttributes<SVGElement>
 
 const Icon: React.FunctionComponent<IconProps> = ({className, name, ...restProps}) => {
-  return (<span>
+  return (<>
         <svg className={classes(`xue-icon`, className)} {...restProps}>
             <use xlinkHref={`#${name}`}/>
         </svg>
-    </span>);
+    </>);
 };
 export default Icon;
 
