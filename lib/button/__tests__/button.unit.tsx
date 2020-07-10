@@ -1,7 +1,7 @@
 import Button from '../button';
 import renderer from 'react-test-renderer';
 import * as React from 'react';
-import classes from '../helpers/classes';
+import classes from '../../helpers/classes';
 
 describe('button', function () {
     it('是个div', function () {
