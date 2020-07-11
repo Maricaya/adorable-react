@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {scopedClassMaker} from '../class';
+import {scopedClassMaker} from '../helpers/classes';
 const sc = scopedClassMaker('xue-layout');
 
 type Props = {

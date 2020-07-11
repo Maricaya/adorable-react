@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Fragment, ReactElement, ReactNode} from 'react';
 import './dialog.scss';
 import {Icon} from '../index';
-import {scopedClassMaker} from '../class';
+import {scopedClassMaker} from '../helpers/classes';
 import ReactDOM from 'react-dom';
 
 type DialogProps = {
