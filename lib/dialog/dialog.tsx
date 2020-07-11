@@ -57,11 +57,23 @@ Dialog.defaultProps = {
 };
 
 const alert = (content: string) => {
-  const component = <Dialog visible={true} onClose={() => {}}>
+  // 1. 声明一个组件
+  const component = <Dialog visible={true} onClose={() => {
+    // 5. 关闭的时候，重新渲染组件，改变组件的 visible 属性
+    // 再从 ReactDOM 上卸载掉 div
+    // 删除 div
+    ReactDOM.render(React.cloneElement(component, {visible:false}), div);
+    ReactDOM.unmountComponentAtNode(div);
+    div.remove();
+  }}>
     {content}
   </Dialog>;
+  // 2. 声明一个 div
   const div = document.createElement('div');
+  // 3. 把 div 放在 body 中
   document.body.append(div);
+  // 4. 把组件放在 div 中
+  // 这样就是动态地创建一个 div，在 div 中放一个组件
   ReactDOM.render(component, div);
 };
 
