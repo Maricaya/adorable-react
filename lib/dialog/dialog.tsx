@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Fragment, ReactElement} from 'react';
+import {Fragment, ReactElement, ReactNode} from 'react';
 import './dialog.scss';
 import {Icon} from '../index';
 import {scopedClassMaker} from '../class';
@@ -24,7 +24,7 @@ const Dialog: React.FunctionComponent<DialogProps> = (props) => {
       props.onClose(e);
     }
   };
-  const x =
+  const component =
     props.visible ?
       <Fragment>
         <div className={sc('mask')} onClick={onClickMask}>
@@ -39,16 +39,17 @@ const Dialog: React.FunctionComponent<DialogProps> = (props) => {
           <main className={sc('main')}>
             {props.children}
           </main>
+          {props.buttons && props.buttons.length > 0 &&
           <footer className={sc('footer')}>
             {props.buttons && props.buttons.map((button, i) =>
               React.cloneElement(button, {key: i})
             )}
-          </footer>
+          </footer>}
         </div>
       </Fragment>
       : null;
   return (
-    ReactDOM.createPortal(x, document.body)
+    ReactDOM.createPortal(component, document.body)
   );
 };
 
@@ -56,28 +57,49 @@ Dialog.defaultProps = {
   closeOnClickMask: false
 };
 
-const alert = (content: string) => {
-  // 1. 声明一个组件
-  const component = <Dialog visible={true} onClose={() => {
-    // 5. 关闭的时候，重新渲染组件，改变组件的 visible 属性
-    // 再从 ReactDOM 上卸载掉 div
-    // 删除 div
-    ReactDOM.render(React.cloneElement(component, {visible:false}), div);
+const modal = (content: ReactNode, buttons?: Array<ReactElement>, afterClose?: () => void) => {
+  const close = () => {
+    ReactDOM.render(React.cloneElement(component, {visible: false}), div);
     ReactDOM.unmountComponentAtNode(div);
     div.remove();
-  }}>
-    {content}
-  </Dialog>;
-  // 2. 声明一个 div
+  };
+  const component =
+    <Dialog
+      visible={true}
+      buttons={buttons}
+      onClose={() => {
+        close();
+        afterClose && afterClose();
+      }}>
+      {content}
+    </Dialog>;
   const div = document.createElement('div');
-  // 3. 把 div 放在 body 中
   document.body.append(div);
-  // 4. 把组件放在 div 中
-  // 这样就是动态地创建一个 div，在 div 中放一个组件
   ReactDOM.render(component, div);
+  return close;
 };
 
-export {alert};
+const alert = (content: string) => {
+  const button = [<button onClick={() => close()}>ok</button>];
+  const close = modal(content, button);
+};
+
+const confirm = (content: string, yes?: () => void, no?: () => void) => {
+  const onYes = () => {
+    close();
+    yes && yes();
+  };
+  const onNo = () => {
+    close();
+    no && no();
+  };
+  const buttons = [
+    <button onClick={onYes}>yes</button>,
+    <button onClick={onNo}>no</button>
+  ];
+  const close = modal(content, buttons, no);
+};
+
+export {alert, confirm, modal};
 
 export default Dialog;
-

@@ -6,11 +6,12 @@ type Props = {
 } & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 const Button: React.FunctionComponent<Props> = (props) => {
-    return (
-        <button>
-          {props.children}
-        </button>
-    )
+  const {children, ...restProps} = props;
+  return (
+    <button {...restProps}>
+      {children}
+    </button>
+  );
 };
 
 export default Button;
