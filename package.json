@@ -11,7 +11,7 @@
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "test": "cross-env NODE_ENV=test jest --config=jest.config.js --runInBand",
     "realtest": "cross-env NODE_ENV=test jest --config=jest.config.js  --runInBand",
-    "ci": "cross-env NODE_ENV=test JEST_JUNIT_OUTPUT=./test-results/jest/results.xml jest --config=jest.config.ci.js"
+    "ci": "cross-env NODE_ENV=test JEST_JUNIT_OUTPUT=results.xml JEST_JUNIT_OUTPUT_DIR=./test-results/jest jest --config=jest.config.ci.js"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.10.4",
