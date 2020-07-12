@@ -1,9 +1,6 @@
 import * as React from 'react';
-import Layout from './layout';
-import Header from './header';
-import Content from './content';
-import Footer from './footer';
-import Aside from './aside';
+import {Layout, Header, Content, Footer, Aside} from '../index';
+
 import './layout.example.scss';
 
 const LayoutExample: React.FunctionComponent = () => {
