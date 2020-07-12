@@ -7,9 +7,13 @@ import DialogExample from './lib/dialog/dialog.example';
 import LayoutExample from './lib/layout/layout.example';
 import {Aside, Header, Layout, Content, Footer} from './lib';
 import './example.scss';
+import IconDemo from './lib/icon/icon.demo';
 
 const logo = require('./logo.jpg');
 
+// 只有require支持自定义加载,!! 表示开启自定义加载
+const x = require('!!raw-loader!./lib/icon/icon.example')
+console.log(logo, x, IconExample)
 // void 'examples 不要改动这一行代码！'; // tslint:disable-line
 
 ReactDOM.render(
@@ -17,7 +21,7 @@ ReactDOM.render(
     <Layout className="site-page">
       <Header className="site-header">
         <div className="logo">
-          <img src={logo} width="48" height="48" alt="logo"/>
+          <img src={logo.default} width="48" height="48" alt="logo"/>
           <span>xue ui</span>
         </div>
       </Header>
@@ -32,7 +36,7 @@ ReactDOM.render(
           </ul>
         </Aside>
         <Content className="side-main">
-          <Route path="/icon" component={IconExample}/>
+          <Route path="/icon" component={IconDemo}/>
           <Route path="/button" component={ButtonExample}/>
           <Route path="/dialog" component={DialogExample}/>
           <Route path="/layout" component={LayoutExample}/>

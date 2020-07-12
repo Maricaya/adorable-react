@@ -32,6 +32,7 @@
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.1.0",
     "jest-junit": "^11.0.1",
+    "raw-loader": "^4.0.1",
     "react-test-renderer": "^16.13.1",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",
