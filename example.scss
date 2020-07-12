@@ -51,12 +51,19 @@ $border-color: #eee;
     font-size: 18px;
   }
   ul {
-    padding: 8px;
     min-width: 12em;
     > li {
-      padding: 8px 0;
       a {
-        color: $main-color;
+        color: #333;
+        padding: 8px $padding;
+        display: block;
+        &:hover {
+          color: $main-color;
+        }
+        &.active {
+          color: #ffffff;
+          background: desaturate($main-color, 50%);
+        }
       }
     }
   }
