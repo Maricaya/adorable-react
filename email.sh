@@ -1,4 +1,7 @@
 #!/bin/sh
+git config user.name "Maricaya"
+git config user.email "915270549@qq.com"
+
 
 git filter-branch --env-filter '
 

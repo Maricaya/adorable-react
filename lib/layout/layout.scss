@@ -1,7 +1,6 @@
 @import "../helper";
 
 .xue-layout {
-  border: 1px solid red;
   display: flex;
   flex-direction: column;
   &.xue-layout-hasAside {
@@ -12,11 +11,9 @@
   }
   &-content {
     flex-grow: 1;
-    border: 1px solid gray;
   }
   & &{
     flex-grow: 1;
-    border: 1px solid blue;
     flex-direction: row;
   }
 }
