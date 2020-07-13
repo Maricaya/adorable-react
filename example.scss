@@ -42,6 +42,7 @@ pre {
 
 .site-main {
   padding-top: $padding;
+  padding-left: $padding;
 }
 
 .site-header {
@@ -63,8 +64,11 @@ pre {
     }
   }
 }
-
+.site-content {
+  display: flex;
+}
 .site-aside {
+  width: 200px;
   h2 {
     padding: 8px;
     font-size: 18px;
