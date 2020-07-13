@@ -6,3 +6,6 @@
 [![GitHub forks](https://img.shields.io/github/forks/Maricaya/xue-react)](https://github.com/Maricaya/xue-react/network)
 [![GitHub stars](https://img.shields.io/github/stars/Maricaya/xue-react)](https://github.com/Maricaya/xue-react/stargazers)
 
+
+https://maricaya.github.io/xue-react/example.html#/dialog
+
