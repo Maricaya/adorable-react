@@ -1,4 +1,5 @@
-# xue-react
+# adorable-react(持续更新中)
+# 一套好用的 PC 端 React 组件 
 [![GitHub license](https://img.shields.io/github/license/Maricaya/xue-react)](https://github.com/Maricaya/xue-react/blob/master/LICENSE)
 [![CircleCI](https://circleci.com/gh/Maricaya/xue-react.svg?style=svg)](https://app.circleci.com/pipelines/github/Maricaya/xue-react)
 [![npm version](https://badge.fury.io/js/adorable-react.svg)](https://badge.fury.io/js/adorable-react)
@@ -6,6 +7,53 @@
 [![GitHub forks](https://img.shields.io/github/forks/Maricaya/xue-react)](https://github.com/Maricaya/xue-react/network)
 [![GitHub stars](https://img.shields.io/github/stars/Maricaya/xue-react)](https://github.com/Maricaya/xue-react/stargazers)
 
-
+> 组件仅供学习交流，请勿在生产环境中使用
+# 文档
 https://maricaya.github.io/xue-react/example.html#/dialog
 
+# 组件列表
+- [x] Icon
+- [ ] button
+- [x] Dialog
+- [x] Layout
+- [ ] Form
+- [ ] Scroll
+- [ ] Tree
+
+# 安装
+```bash
+npm install adorable-react
+yarn add adorable-react
+```
+# 使用
+```jsx
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import { Button } from 'adorable-react'
+import 'adorable-react/lib/adorable-react.css'
+
+ReactDOM.render(
+  <div>
+    <Button>Default</Button>
+  </div>,
+  mountNode
+)
+
+```
+需要注意的是，样式文件需要单独引入。
+
+
+# 特别提醒
+使用 adorable-react 时，需要使用 border-box 盒模型，否则会影响样式。代码示例：
+```css
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+```
+
+# License
+This project is licensed under the terms of the MIT license.
