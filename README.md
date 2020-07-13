@@ -1,5 +1,5 @@
 # adorable-react(持续更新中)
-# 一套好用的 PC 端 React 组件 
+# 使用 TypeScript + Hooks 构建，一套好用的 PC 端 React 组件 
 [![GitHub license](https://img.shields.io/github/license/Maricaya/xue-react)](https://github.com/Maricaya/xue-react/blob/master/LICENSE)
 [![CircleCI](https://circleci.com/gh/Maricaya/xue-react.svg?style=svg)](https://app.circleci.com/pipelines/github/Maricaya/xue-react)
 [![npm version](https://badge.fury.io/js/adorable-react.svg)](https://badge.fury.io/js/adorable-react)
@@ -8,6 +8,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/Maricaya/xue-react)](https://github.com/Maricaya/xue-react/stargazers)
 
 > 组件仅供学习交流，请勿在生产环境中使用
+
 # 文档
 https://maricaya.github.io/xue-react/example.html#/dialog
 
