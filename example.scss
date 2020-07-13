@@ -11,12 +11,15 @@ $border-color: #eee;
 *::after, *::before {
   box-sizing: border-box;
 }
+
 ul, ol {
   list-style: none;
 }
+
 h1, h2, h3.h4.h5, h6 {
   font-weight: normal;
 }
+
 a {
   text-decoration: none;
   color: inherit;
@@ -34,41 +37,52 @@ pre {
 
 .site-page {
   background: #fff;
+  min-height: 100vh;
 }
+
 .site-main {
   padding-top: $padding;
 }
+
 .site-header {
   background: $border-color;
   padding: 8px 0;
+
   .logo {
     padding: 0 $padding;
     display: flex;
     align-items: center;
+
     > img {
       margin-right: 8px;
     }
+
     > span {
       color: #00ADB5;
       font-size: 32px;
     }
   }
 }
+
 .site-aside {
   h2 {
     padding: 8px;
     font-size: 18px;
   }
+
   ul {
     min-width: 12em;
+
     > li {
       a {
         color: #333;
         padding: 8px $padding;
         display: block;
+
         &:hover {
           color: $main-color;
         }
+
         &.active {
           color: #ffffff;
           background: desaturate($main-color, 50%);
@@ -77,6 +91,7 @@ pre {
     }
   }
 }
+
 .site-footer {
   text-align: center;
   font-size: 12px;
@@ -84,6 +99,7 @@ pre {
   padding: $padding 0;
   border-top: 1px solid $border-color;
 }
+
 .example {
   padding: $padding 0;
 }
