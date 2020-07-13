@@ -1,5 +1,5 @@
-# adorable-react(持续更新中)
-# 使用 TypeScript + Hooks 构建，一套好用的 PC 端 React 组件 
+# adorable-react(持续更新中) 使用 TypeScript、React Hooks
+# 一套好用的 PC 端 React 组件 
 [![GitHub license](https://img.shields.io/github/license/Maricaya/xue-react)](https://github.com/Maricaya/xue-react/blob/master/LICENSE)
 [![CircleCI](https://circleci.com/gh/Maricaya/xue-react.svg?style=svg)](https://app.circleci.com/pipelines/github/Maricaya/xue-react)
 [![npm version](https://badge.fury.io/js/adorable-react.svg)](https://badge.fury.io/js/adorable-react)
@@ -9,9 +9,13 @@
 
 > 组件仅供学习交流，请勿在生产环境中使用
 
-# 文档
-https://maricaya.github.io/xue-react/example.html#/dialog
+# 特性
+- 使用 TypeScript 开发，提供完整的类型定义文件。
+- 使用 React Hooks 进行状态管理。
+- 深入每个细节的主题定制能力。
 
+- 文档地址：
+https://maricaya.github.io/xue-react/example.html
 # 组件列表
 - [x] Icon
 - [ ] button
