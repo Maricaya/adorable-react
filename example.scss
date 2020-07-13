@@ -1,3 +1,7 @@
+$padding: 16px;
+$main-color: #00ADB5;
+$border-color: #eee;
+
 * {
   margin: 0;
   padding: 0;
@@ -17,13 +21,16 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
 body {
   font-size: 16px;
 }
-$padding: 16px;
-$main-color: #00ADB5;
-$border-color: #eee;
 
+pre {
+  font-family: "Fira Code Medium", Consolas, monospace;
+  padding: $padding;
+  width: 600px;
+}
 
 .site-page {
   background: #fff;
@@ -76,4 +83,7 @@ $border-color: #eee;
   color: #666;
   padding: $padding 0;
   border-top: 1px solid $border-color;
+}
+.example {
+  padding: $padding 0;
 }
