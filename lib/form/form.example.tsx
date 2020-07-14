@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Form, {FormValue} from './form';
 import {Fragment, useState} from 'react';
-import Validator from './validator';
+import Validator, {noError} from './validator';
 
 const FormExample: React.FunctionComponent = () => {
   const [formData, setFormData] = useState<FormValue>({
@@ -12,8 +12,10 @@ const FormExample: React.FunctionComponent = () => {
     {name: 'username', label: '用户名', input: {type: 'text'}},
     {name: 'password', label: '密码', input: {type: 'password'}},
   ]);
+  const [errors, setErrors] = useState({});
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(e);
     const rules = [
       {key: 'username', required: true},
       {key: 'username', minLength: 8, maxLength: 16},
@@ -21,8 +23,13 @@ const FormExample: React.FunctionComponent = () => {
       {key: 'password', required: true}
     ];
     const errors = Validator(formData, rules);
-    console.log('errors', errors, e)
+    if (noError(errors)) {
+    //  没有错
+    }
+    setErrors(errors);
   };
+
+
   return (
     <Form value={formData} fields={fields}
           buttons={
@@ -32,7 +39,8 @@ const FormExample: React.FunctionComponent = () => {
             </Fragment>
           }
           onChange={(newValue) => setFormData(newValue)}
-          onSubmit={onSubmit}/>
+          onSubmit={onSubmit}
+          errors={errors}/>
   );
 };
 export default FormExample;

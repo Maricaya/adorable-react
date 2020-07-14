@@ -1,5 +1,4 @@
 import {FormValue} from './form';
-
 type FormRule = {
   key: string;
   required?: boolean;
@@ -10,12 +9,16 @@ type FormRule = {
 
 type FormRules = Array<FormRule>;
 
-type FormErrors = {
+export type FormErrors = {
   [K: string]: string[]
 }
 
 function isEmpty(value: any) {
   return value === undefined || value === null || value === '';
+}
+
+export function noError(errors: any) {
+  return Object.keys(errors).length === 0;
 }
 
 const Validator: (formValue: FormValue, rules: FormRules) => FormErrors = (formValue, rules) => {
@@ -25,6 +28,7 @@ const Validator: (formValue: FormValue, rules: FormRules) => FormErrors = (formV
       errors[key] = [];
     }
     errors[key].push(message);
+
   };
 
   rules.map(rule => {

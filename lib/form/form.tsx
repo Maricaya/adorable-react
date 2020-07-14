@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {FormErrors} from './validator';
 
 export type FormValue = {
   [K: string]: any
@@ -10,6 +11,7 @@ type Props = {
   buttons: React.ReactElement;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: (value: FormValue) => void;
+  errors: FormErrors
 }
 
 const Form: React.FunctionComponent<Props> = (props) => {
@@ -29,8 +31,9 @@ const Form: React.FunctionComponent<Props> = (props) => {
           {f.label}
           <input type={f.input.type} value={formData[f.name]}
                  onChange={(e) => onInputChange(f.name, e.target.value)}/>
-        </div>))
-      }
+        <div>{props.errors[f.name]}</div>
+        </div>)
+      )}
       <div>
         {props.buttons}
       </div>
