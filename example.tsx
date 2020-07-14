@@ -8,12 +8,13 @@ import LayoutExample from './lib/layout/layout.example';
 import {Aside, Header, Layout, Content, Footer} from './lib';
 import './example.scss';
 import IconDemo from './lib/icon/icon.demo';
+import FormDemo from './lib/form/form.demo';
 
 const logo = require('./logo.jpg');
 
 // 只有require支持自定义加载,!! 表示开启自定义加载
-const x = require('!!raw-loader!./lib/icon/icon.example')
-console.log(logo, x, IconExample)
+const x = require('!!raw-loader!./lib/icon/icon.example');
+console.log(logo, x, IconExample);
 // void 'examples 不要改动这一行代码！'; // tslint:disable-line
 
 ReactDOM.render(
@@ -33,6 +34,7 @@ ReactDOM.render(
             <li><NavLink to="/button">button 按钮</NavLink></li>
             <li><NavLink to="/dialog">dialog 对话框</NavLink></li>
             <li><NavLink to="/layout">layout 布局</NavLink></li>
+            <li><NavLink to="/form">Form 表单</NavLink></li>
           </ul>
         </Aside>
         <Content className="side-main">
@@ -40,6 +42,7 @@ ReactDOM.render(
           <Route path="/button" component={ButtonExample}/>
           <Route path="/dialog" component={DialogExample}/>
           <Route path="/layout" component={LayoutExample}/>
+          <Route path="/form" component={FormDemo}/>
         </Content>
       </Layout>
       <Footer className="site-footer">
