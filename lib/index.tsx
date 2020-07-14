@@ -1,4 +1,5 @@
-console.log(123);
+const div = document.createElement('div');
 
-// export {default as Button} from './button/button';
-// const
+div.innerText = 'div';
+
+document.body.appendChild(div);

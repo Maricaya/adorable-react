@@ -4,12 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = Object.assign({}, base,{
   mode: 'development',
   entry: {
-    example: './example.tsx'
+    index: './lib/index.tsx'
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: "Xue - React",
-      template: "example.html"
+      template: "index.html"
     })
   ]
 })
