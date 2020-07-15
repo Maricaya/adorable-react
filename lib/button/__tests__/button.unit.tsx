@@ -7,5 +7,4 @@ describe('button', function () {
         const json = renderer.create(<Button/>).toJSON();
         expect(json).toMatchSnapshot();
     });
-
 });

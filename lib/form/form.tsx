@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {FormErrors} from './validator';
 import Input from '../input/input';
 import {classes} from '../helpers/classes';
 import './form.scss';
@@ -14,8 +13,9 @@ type Props = {
   buttons: React.ReactElement;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: (value: FormValue) => void;
-  errors: FormErrors,
+  errors: { [K: string]: string[] };
   errorsDisplayMode?: 'first' | 'all';
+  transformError?: (message: string) => string;
 }
 
 const Form: React.FunctionComponent<Props> = (props) => {
@@ -27,6 +27,14 @@ const Form: React.FunctionComponent<Props> = (props) => {
   const onInputChange = (name: string, value: string) => {
     const newFormValue = {...formData, [name]: value};
     props.onChange(newFormValue);
+  };
+  const transformError = (message: string) => {
+    const map: any = {
+      required: '必填',
+      minLength: '太短',
+      maxLength: '太长'
+    };
+    return props.transformError && props.transformError(message) || map[message] || '未知错误';
   };
   return (
     <form onSubmit={onSubmit}>
@@ -45,8 +53,8 @@ const Form: React.FunctionComponent<Props> = (props) => {
               <div className="xue-form-error">
                 {props.errors[f.name] ?
                   props.errorsDisplayMode === 'first' ?
-                    props.errors[f.name][0] :
-                    props.errors[f.name].join('，') :
+                    transformError!(props.errors[f.name][0]) :
+                    props.errors[f.name].map(error => transformError!(error)).join('，') :
                   <span>&nbsp;</span>}
               </div>
             </td>
