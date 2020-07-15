@@ -1,5 +1,8 @@
 import * as React from 'react';
 import {FormErrors} from './validator';
+import Input from '../input/input';
+import {classes} from '../helpers/classes';
+import './form.scss';
 
 export type FormValue = {
   [K: string]: any
@@ -26,17 +29,28 @@ const Form: React.FunctionComponent<Props> = (props) => {
   };
   return (
     <form onSubmit={onSubmit}>
-      {props.fields.map(f => (
-        <div key={f.name}>
-          {f.label}
-          <input type={f.input.type} value={formData[f.name]}
-                 onChange={(e) => onInputChange(f.name, e.target.value)}/>
-        <div>{props.errors[f.name]}</div>
-        </div>)
-      )}
-      <div>
-        {props.buttons}
-      </div>
+      <table className="xue-form-table">
+        {props.fields.map(f => (
+          <tr className={classes('xue-form-tr')} key={f.name}>
+            <td className="xue-form-td">
+              <span className="xue-form-label">
+                {f.label}
+              </span>
+            </td>
+            <td className="xue-form-td">
+              <Input className="xue-form-input" type={f.input.type} value={formData[f.name]}
+                     onChange={(e) => onInputChange(f.name, e.target.value)}/>
+            </td>
+            <div>{props.errors[f.name]}</div>
+          </tr>)
+        )}
+        <tr className="xue-form-tr">
+          <td className="xue-form-td"/>
+          <td className="xue-form-td">
+            {props.buttons}
+          </td>
+        </tr>
+      </table>
     </form>
   );
 };
