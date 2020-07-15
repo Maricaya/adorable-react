@@ -37,7 +37,7 @@ ReactDOM.render(
             <li><NavLink to="/form">Form 表单</NavLink></li>
           </ul>
         </Aside>
-        <Content className="side-main">
+        <Content className="site-main">
           <Route path="/icon" component={IconDemo}/>
           <Route path="/button" component={ButtonExample}/>
           <Route path="/dialog" component={DialogExample}/>

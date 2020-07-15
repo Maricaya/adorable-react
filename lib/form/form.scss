@@ -1,19 +1,25 @@
 .xue-form {
-  &-tr:first-child &-td {
-    //padding-top: 0;
+  &-table {
+    border-collapse: collapse;
   }
-
+  &-label {
+    line-height: 32px;
+  }
   &-tr:last-child &-td {
-
     padding-bottom: 0;
   }
-
   &-td {
+    vertical-align: top;
     padding-top: 0;
     padding-bottom: 32px;
   }
-
   &-td + &-td {
     padding-left: 16px;
+  }
+  &-error {
+    color: red;
+    margin-top: 4px;
+    font-size: 0.8em;
+    position: absolute;
   }
 }

@@ -14,7 +14,8 @@ type Props = {
   buttons: React.ReactElement;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: (value: FormValue) => void;
-  errors: FormErrors
+  errors: FormErrors,
+  errorsDisplayMode?: 'first' | 'all';
 }
 
 const Form: React.FunctionComponent<Props> = (props) => {
@@ -30,6 +31,7 @@ const Form: React.FunctionComponent<Props> = (props) => {
   return (
     <form onSubmit={onSubmit}>
       <table className="xue-form-table">
+        <tbody>
         {props.fields.map(f => (
           <tr className={classes('xue-form-tr')} key={f.name}>
             <td className="xue-form-td">
@@ -40,8 +42,14 @@ const Form: React.FunctionComponent<Props> = (props) => {
             <td className="xue-form-td">
               <Input className="xue-form-input" type={f.input.type} value={formData[f.name]}
                      onChange={(e) => onInputChange(f.name, e.target.value)}/>
+              <div className="xue-form-error">
+                {props.errors[f.name] ?
+                  props.errorsDisplayMode === 'first' ?
+                    props.errors[f.name][0] :
+                    props.errors[f.name].join('，') :
+                  <span>&nbsp;</span>}
+              </div>
             </td>
-            <div>{props.errors[f.name]}</div>
           </tr>)
         )}
         <tr className="xue-form-tr">
@@ -50,9 +58,14 @@ const Form: React.FunctionComponent<Props> = (props) => {
             {props.buttons}
           </td>
         </tr>
+        </tbody>
       </table>
     </form>
   );
+};
+
+Form.defaultProps = {
+  errorsDisplayMode: 'all'
 };
 
 export default Form;
