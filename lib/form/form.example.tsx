@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Form, {FormValue} from './form';
 import {Fragment, useState} from 'react';
+import Form, {FormValue} from './form';
 import Validator, {noError} from './validator';
 import {Button} from '../index';
 
-const userNames = ['xlchu', 'jack', 'rose'];
+const userNames = ['xlchu', 'xlchu123456', 'jack', 'rose'];
 const checkUserName = (username: string, succeed: () => void, fail: () => void) => {
   setTimeout(() => {
     if (userNames.indexOf(username) <= 0) {
@@ -17,7 +17,7 @@ const checkUserName = (username: string, succeed: () => void, fail: () => void) 
 
 const FormExample: React.FunctionComponent = () => {
   const [formData, setFormData] = useState<FormValue>({
-    username: 'xlchu',
+    username: 'xlchu123456',
     password: ''
   });
   const [fields] = useState([
@@ -25,22 +25,17 @@ const FormExample: React.FunctionComponent = () => {
     {name: 'password', label: '密码', input: {type: 'password'}},
   ]);
   const [errors, setErrors] = useState({});
-
+  const validator = (username: string) => {
+    return new Promise<string>((resolve, reject) => {
+      checkUserName(username, resolve, () => reject('unique'));
+    })
+  };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     console.log(e);
     const rules = [
       {key: 'username', required: true},
       {key: 'username', minLength: 8, maxLength: 16},
-      {
-        key: 'username', validator: {
-          name: 'unique',
-          validate(username: string) {
-            return new Promise<void>((resolve, reject) => {
-              checkUserName(username, resolve, reject);
-            });
-          }
-        }
-      },
+      {key: 'username', validator},
       {key: 'username', pattern: /^[A-Za-z0-9]+$/},
       {key: 'password', required: true}
     ];
@@ -50,9 +45,16 @@ const FormExample: React.FunctionComponent = () => {
         //  没有错
       }
     });
-
   };
-
+  const transformError = (message: string) => {
+    const map: any = {
+      unique: '用户名已使用',
+      required: 'required',
+      minLength: 'too short',
+      maxLength: 'too long'
+    };
+    return map[message];
+  };
 
   return (
     <Form value={formData} fields={fields}
@@ -64,7 +66,9 @@ const FormExample: React.FunctionComponent = () => {
           }
           onChange={(newValue) => setFormData(newValue)}
           onSubmit={onSubmit}
-          errors={errors}/>
+          errors={errors}
+          transformError={transformError}
+    />
   );
 };
 export default FormExample;

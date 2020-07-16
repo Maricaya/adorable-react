@@ -6,10 +6,7 @@ type FormRule = {
   minLength?: number;
   maxLength?: number;
   pattern?: RegExp;
-  validator?: {
-    name: string;
-    validate: (value: string) => Promise<void>;
-  }
+  validator?: (value: string) => Promise<string>;
 }
 
 type FormRules = Array<FormRule>;
@@ -26,10 +23,7 @@ export function noError(errors: any) {
   return Object.keys(errors).length === 0;
 }
 
-type OneError = {
-  message: string;
-  promise?: Promise<any>;
-}
+type OneError = string | Promise<string>;
 
 const Validator: (formValue: FormValue, rules: FormRules, callback: (errors: any) => void) => void = (formValue, rules, callback) => {
   let errors: FormErrors = {};
@@ -44,58 +38,72 @@ const Validator: (formValue: FormValue, rules: FormRules, callback: (errors: any
     const value = formValue[rule.key];
     if (rule.validator) {
       //  自定义
-      const promise = rule.validator.validate(value);
-      addError(rule.key, {message: rule.validator.name, promise});
+      const promise = rule.validator(value);
+      addError(rule.key, promise);
     }
     if (rule.required && isEmpty(value)) {
-      addError(rule.key, {message: 'required'});
+      addError(rule.key, 'required');
     }
     if (rule.minLength && !isEmpty(value) && value.length < rule.minLength) {
-      addError(rule.key, {message: 'minLength'});
+      addError(rule.key, 'minLength');
     }
     if (rule.maxLength && !isEmpty(value) && value.length > rule.maxLength) {
-      addError(rule.key, {message: 'maxLength'});
+      addError(rule.key, 'maxLength');
     }
     if (rule.pattern) {
       if (!rule.pattern.test(value)) {
-        addError(rule.key, {message: 'pattern'});
+        addError(rule.key, 'pattern');
       }
     }
   });
-
-  Promise.all(
-    flat(Object.values(errors))
-      .filter(item => item.promise)
-      .map(item => item.promise)
-  )
-    .finally(() => {
-      callback(fromEntries(
-        Object.keys(errors)
-          .map(key =>
-            [key, errors[key].map(item => item.message)]
-          )));
+  // [['username', promise] ['password', promise]]
+  const flattenErrors = flat(Object.keys(errors).map(key =>
+    errors[key].map(promise => [key, promise])
+  ));
+  const newPromises = flattenErrors.map(
+    ([key, promiseOrString]) => {
+      const promise = promiseOrString instanceof Promise ? promiseOrString : Promise.reject(promiseOrString);
+      return promise.then(() => [key, undefined], (reason) => [key, reason]);
     });
+  const hasError = (item: [string, undefined] | [string, string]): item is [string, string] =>
+    typeof item[1] === 'string';
+  Promise.all(newPromises).then(results => {
+      callback(zip(results.filter<[string, string]>(hasError)));
+    }
+  );
   return errors;
 };
 
 export default Validator;
 
-function flat(array: Array<any>) {
-  const result = [];
+function flat<T>(array: Array<T | T[]>) {
+  const result: T[] = [];
   for (let i = 0; i < array.length; i++) {
     if (array[i] instanceof Array) {
-      result.push(...array[i]);
+      result.push(...array[i] as T[]);
     } else {
-      result.push(array[i]);
+      result.push(array[i] as T);
     }
   }
   return result;
 }
 
-function fromEntries(array: Array<[string, string[]]>) {
-  const result: { [key: string]: string[] } = {};
-  for (let i = 0; i < array.length; i++) {
-    result[array[i][0]] = array[i][1];
-  }
+// kvList = [['username', 'e1'],['username', 'e2']]
+function zip(kvList: Array<[string, string]>) {
+  const result: { [key: string]: Array<string> } = {};
+  kvList.map(([key, value]) => {
+    //  kv = ['username', 'e1']
+    result[key] = result[key] || [];
+    result[key].push(value);
+  });
   return result;
 }
+
+//
+// function fromEntries(array: Array<[string, string[]]>) {
+//   const result: { [key: string]: string[] } = {};
+//   for (let i = 0; i < array.length; i++) {
+//     result[array[i][0]] = array[i][1];
+//   }
+//   return result;
+// }
