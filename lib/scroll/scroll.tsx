@@ -1,10 +1,18 @@
 import * as React from 'react';
 import './scroll.scss';
+import {HTMLAttributes} from 'react';
 
-const scroll: React.FunctionComponent = () => {
+type Props = {
+
+} & HTMLAttributes<HTMLDivElement>
+
+const scroll: React.FunctionComponent<Props> = (props) => {
+  const {children, ...rest} = props;
   return (
-    <div>
-      scroll
+    <div className="xue-scroll" {...rest}>
+      <div className="xue-scroll-inner">
+        {children}
+      </div>
     </div>
   );
 };
