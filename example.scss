@@ -1,5 +1,7 @@
 $padding: 16px;
 $main-color: #00ADB5;
+$background: #e6f7ff;
+$text-color: #1890ff;
 $border-color: #eee;
 
 * {
@@ -66,6 +68,7 @@ pre {
 }
 
 .site-aside {
+  border-right: 1px solid #eee;
   h2 {
     padding: 8px;
     font-size: 18px;
@@ -81,12 +84,12 @@ pre {
         display: block;
 
         &:hover {
-          color: $main-color;
+          color: $text-color;
         }
 
         &.active {
-          color: #ffffff;
-          background: desaturate($main-color, 50%);
+          color: $text-color;
+          background: $background;
         }
       }
     }
