@@ -1,9 +1,10 @@
 import * as React from 'react';
+import {Button} from '../index';
 
 const ButtonExample: React.FunctionComponent = () => {
   return (
     <>
-      <button/>
+      <Button>确认</Button>
     </>
   );
 };

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Fragment, useState} from 'react';
-import Form, {FormValue} from './form';
+import {FormValue} from './form';
 import Validator, {noError} from './validator';
-import {Button} from '../index';
+import {Button, Form} from '../index';
 
 const userNames = ['xlchu', 'xlchu123456', 'jack', 'rose'];
 const checkUserName = (username: string, succeed: () => void, fail: () => void) => {
