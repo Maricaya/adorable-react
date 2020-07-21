@@ -1,6 +1,7 @@
 /dist/*
 /doc/*
 /.idea/*
+*.snap
 /test-results
 # Logs
 logs
