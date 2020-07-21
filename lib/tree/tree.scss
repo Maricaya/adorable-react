@@ -5,6 +5,7 @@
   }
 
   &-text {
+    display: block;
     &:hover {
       background: tan;
     }
@@ -32,5 +33,9 @@
     .xue-tree-text {
       padding-left: 4em;
     }
+  }
+  &-collapsed {
+    height: 0;
+    overflow: hidden;
   }
 }

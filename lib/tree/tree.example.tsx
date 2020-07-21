@@ -8,7 +8,9 @@ const TreeExample: React.FC = () => {
       text: '1',
       value: '1',
       children: [
-        {text: '1.1', value: '1.1'},
+        {text: '1.1', value: '1.1', children: [
+            {text: '1.1.1', value: '1.1.1'}
+          ]},
         {text: '1.2', value: '1.2'}
       ]
     },

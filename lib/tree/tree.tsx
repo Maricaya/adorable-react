@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {scopedClassMaker} from '../helpers/classes';
 import './tree.scss';
-import {ChangeEventHandler} from 'react';
+import {ChangeEventHandler, useState} from 'react';
 
 export type SourceDataItem = {
   text: string,
@@ -10,11 +10,11 @@ export type SourceDataItem = {
 }
 
 type Props = {
-    sourceData: SourceDataItem[],
-  } & ({
-    selected: string[], multiple: true,
-    onChange: (newSelected: string[]) => void
-  } | {
+  sourceData: SourceDataItem[],
+} & ({
+  selected: string[], multiple: true,
+  onChange: (newSelected: string[]) => void
+} | {
   selected: string, multiple: false,
   onChange: (newSelected: string) => void
 })
@@ -40,18 +40,34 @@ const Tree: React.FC<Props> = (props) => {
           props.onChange(props.selected.filter(value => value !== item.value));
         }
       } else {
-        props.onChange(item.value)
+        props.onChange(item.value);
       }
+    };
+    const [expanded, setExpanded] = useState(true);
+
+    const expand = () => {
+      setExpanded(true);
+    };
+    const collapse = () => {
+      setExpanded(false);
     };
     return <div key={item.value}
                 className={sc(classes)}>
-      <div className={sc('text')}>
+      <label className={sc('text')}>
         <input type="checkbox"
                onChange={onChange}
                checked={checked}/>
         {item.text}
+        {item.children &&
+        <span>
+          {expanded ?
+            <span onClick={collapse}>-</span> :
+            <span onClick={expand}>+</span>}
+        </span>}
+      </label>
+      <div className={sc({children: true, collapsed: !expanded})}>
+        {item.children?.map(sub => renderItem(sub, level + 1))}
       </div>
-      {item.children?.map(sub => renderItem(sub, level + 1))}
     </div>;
   };
 
