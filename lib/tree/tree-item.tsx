@@ -2,6 +2,7 @@ import * as React from 'react';
 import {ChangeEventHandler} from 'react';
 import {useState} from 'react';
 import {scopedClassMaker} from '../helpers/classes';
+import {useUpdate} from '../hooks/useUpdate';
 
 type Props = {
   item: SourceDataItem,
@@ -37,6 +38,10 @@ const TreeItem: React.FC<Props> = (props) => {
   };
   const [expanded, setExpanded] = useState(true);
 
+  useUpdate(expanded, () => {
+    console.log('expanded 的值变为', expanded);
+  });
+
   const expand = () => {
     setExpanded(true);
   };
@@ -61,7 +66,7 @@ const TreeItem: React.FC<Props> = (props) => {
       </label>
       <div className={sc({children: true, collapsed: !expanded})}>
         {item.children?.map(sub =>
-          <TreeItem key={sub.value} item={sub} level={level+1} treeProps={treeProps}/>
+          <TreeItem key={sub.value} item={sub} level={level + 1} treeProps={treeProps}/>
         )}
       </div>
     </div>
