@@ -1,31 +1,43 @@
 import * as React from 'react';
 import {scopedClassMaker} from '../helpers/classes';
-import './tree.scss'
+import './tree.scss';
 
-type SourceDataItem = {
-  text: string, value: string | number, children?: SourceDataItem[]
+export type SourceDataItem = {
+  text: string,
+  value: string,
+  children?: SourceDataItem[]
 }
 
 type Props = {
-  sourceData: SourceDataItem[]
+  sourceData: SourceDataItem[],
+  selected: string[],
+  onChange: (item: SourceDataItem, bool: boolean) => void,
 }
 
 const scopedClass = scopedClassMaker('xue-tree');
 const sc = scopedClass;
 
 
-const renderItem = (item: SourceDataItem, level = 1) => {
+const renderItem = (
+  item: SourceDataItem,
+  selected: string[],
+  onChange: (item: SourceDataItem, bool: boolean) => void,
+  level = 1) => {
   const classes = {
     ['level-' + level]: true,
     'item': true
   };
   return <div key={item.value}
-              style={{paddingLeft: (level - 1) * 10 + 'px'}}
               className={sc(classes)}
   >
-    {item.text}
+    <div className={sc('text')}>
+      <input type="checkbox"
+             onChange={(e) => onChange(item, e.target.checked)}
+             checked={selected.indexOf(item.value) >= 0}/>
+      {item.text}
+    </div>
     {item.children?.map(sub => {
-      return renderItem(sub, level + 1);
+      return renderItem(sub, selected, onChange,level + 1);
     })}
   </div>;
 };
@@ -34,7 +46,7 @@ const Tree: React.FC<Props> = (props) => {
   return (
     <div>
       {props.sourceData?.map(item => {
-        return renderItem(item);
+        return renderItem(item, props.selected, props.onChange);
       })}
     </div>
   );
