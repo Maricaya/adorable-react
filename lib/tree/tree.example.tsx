@@ -37,6 +37,7 @@ const TreeExample: React.FC = () => {
       <div style={{width: 200}}>
         <Tree sourceData={array}
               selected={selectedValues}
+              multiple={true}
               onChange={onChange}
         />
       </div>

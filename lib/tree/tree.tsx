@@ -10,13 +10,13 @@ export type SourceDataItem = {
 
 type Props = {
   sourceData: SourceDataItem[],
-  selected: string[],
   onChange: (item: SourceDataItem, bool: boolean) => void,
 }
+& ({ selected: string[], multiple: true }
+| { selected: string, multiple: false })
 
 const scopedClass = scopedClassMaker('xue-tree');
 const sc = scopedClass;
-
 
 const renderItem = (
   item: SourceDataItem,
@@ -37,19 +37,24 @@ const renderItem = (
       {item.text}
     </div>
     {item.children?.map(sub => {
-      return renderItem(sub, selected, onChange,level + 1);
+      return renderItem(sub, selected, onChange, level + 1);
     })}
   </div>;
 };
 
 const Tree: React.FC<Props> = (props) => {
-  return (
-    <div>
-      {props.sourceData?.map(item => {
-        return renderItem(item, props.selected, props.onChange);
-      })}
-    </div>
-  );
+  if (props.multiple) {
+    return (
+      <div>
+        {props.sourceData?.map(item => {
+          return renderItem(item, props.selected, props.onChange);
+        })}
+      </div>
+    );
+  } else {
+    return <div>1323</div>;
+  }
+
 };
 
 export default Tree;
