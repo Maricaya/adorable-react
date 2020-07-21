@@ -11,6 +11,7 @@ import IconDemo from './lib/icon/icon.demo';
 import FormDemo from './lib/form/form.demo';
 import InputDemo from './lib/input/input.demo';
 import ScrollDemo from './lib/scroll/scroll.demo';
+import TreeDemo from './lib/tree/tree.demo';
 
 const logo = require('./logo.jpg');
 
@@ -32,13 +33,14 @@ ReactDOM.render(
         <Aside className="site-aside">
           <h2>组件</h2>
           <ul>
-            <li><NavLink to="/icon">icon 图标</NavLink></li>
-            <li><NavLink to="/button">button 按钮</NavLink></li>
-            <li><NavLink to="/input">input 输入框</NavLink></li>
-            <li><NavLink to="/dialog">dialog 对话框</NavLink></li>
-            <li><NavLink to="/layout">layout 布局</NavLink></li>
-            <li><NavLink to="/form">form 表单</NavLink></li>
-            <li><NavLink to="/scroll">scroll 滚动条</NavLink></li>
+            <li><NavLink to="/icon">Icon 图标</NavLink></li>
+            <li><NavLink to="/button">Button 按钮</NavLink></li>
+            <li><NavLink to="/input">Input 输入框</NavLink></li>
+            <li><NavLink to="/dialog">Dialog 对话框</NavLink></li>
+            <li><NavLink to="/layout">Layout 布局</NavLink></li>
+            <li><NavLink to="/form">Form 表单</NavLink></li>
+            <li><NavLink to="/scroll">Scroll 滚动条</NavLink></li>
+            <li><NavLink to="/tree">Tree 树形控件</NavLink></li>
           </ul>
         </Aside>
         <Content className="site-main">
@@ -49,6 +51,7 @@ ReactDOM.render(
           <Route path="/layout" component={LayoutExample}/>
           <Route path="/form" component={FormDemo}/>
           <Route path="/scroll" component={ScrollDemo}/>
+          <Route path="/tree" component={TreeDemo}/>
         </Content>
       </Layout>
       <Footer className="site-footer">
