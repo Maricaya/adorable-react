@@ -21,17 +21,17 @@ const TreeExample: React.FC = () => {
       ]
     }
   ]);
-  const [selectedValues, setSelectedValues] = useState(['2.1']);
-  // const [selectedValue, setSelectedValue] = useState('1');
+  // const [selectedValues, setSelectedValues] = useState(['2.1']);
+  const [selectedValue, setSelectedValue] = useState('1');
   return (
     <div>
       Tree
       <h1>展示数据</h1>
       <div style={{width: 200}}>
         <Tree sourceData={array}
-              onChange={(selected) => setSelectedValues(selected)}
-              selected={selectedValues}
-              multiple={true}
+              selected={selectedValue}
+              onChange={(selected) => setSelectedValue(selected)}
+              multiple={false}
         />
       </div>
     </div>

@@ -15,7 +15,7 @@ type Props = {
     selected: string[], multiple: true,
     onChange: (newSelected: string[]) => void
   } | {
-  selected: string, multiple?: false,
+  selected: string, multiple: false,
   onChange: (newSelected: string) => void
 })
 
@@ -39,8 +39,9 @@ const Tree: React.FC<Props> = (props) => {
         } else {
           props.onChange(props.selected.filter(value => value !== item.value));
         }
+      } else {
+        props.onChange(item.value)
       }
-
     };
     return <div key={item.value}
                 className={sc(classes)}>
