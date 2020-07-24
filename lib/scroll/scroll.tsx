@@ -2,9 +2,9 @@ import * as React from 'react';
 import './scroll.scss';
 import {HTMLAttributes, useEffect, useRef, useState} from 'react';
 import {scrollbarWidth} from './scrollbar-width';
-import {UIEventHandler} from 'react';
+import {UIEventHandler, MouseEventHandler, TouchEventHandler} from 'react';
 import {scopedClassMaker} from '../helpers/classes';
-import {MouseEventHandler} from 'react';
+import {Icon} from '../../lib';
 
 type Props = {} & HTMLAttributes<HTMLDivElement>
 
@@ -90,11 +90,46 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
     };
   }, []);
 
+  const [translateY, _setTranslateY] = useState(0);
+  const setTranslateY = (y: number) => {
+    if (y < 0) {y = 0;} else if (y > 150) {y = 150;}
+    _setTranslateY(y);
+  };
+  const lastYRef = useRef(0);
+  const moveCount = useRef(0);
+  const pulling = useRef(false);
+  const onTouchStart: TouchEventHandler = (e) => {
+    const scrollTop = containerRef.current!.scrollTop;
+    if (scrollTop !== 0) {return;}
+    pulling.current = true;
+    lastYRef.current = e.touches[0].clientY;
+    moveCount.current = 0;
+  };
+  const onTouchMove: TouchEventHandler = (e) => {
+    const deltaY = e.touches[0].clientY - lastYRef.current;
+    moveCount.current += 1;
+    if (moveCount.current === 1 && deltaY < 0) {
+      pulling.current = false;
+      return;
+    }
+    if (!pulling.current) {return;}
+    setTranslateY(translateY + deltaY);
+    lastYRef.current = e.touches[0].clientY;
+  };
+  const onTouchEnd: TouchEventHandler = () => {
+    setTranslateY(0);
+  };
   return (
     <div className={sc('')} {...rest}>
       <div className={sc('inner')}
-           style={{right: -scrollbarWidth()}}
+           style={{
+             right: -scrollbarWidth(),
+             transform: `translateY(${translateY}px)`
+           }}
            ref={containerRef}
+           onTouchMove={onTouchMove}
+           onTouchStart={onTouchStart}
+           onTouchEnd={onTouchEnd}
            onScroll={onScroll}>
         {children}
       </div>
@@ -105,6 +140,13 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
              onMouseDown={onMouseDownBar}
         />
       </div>}
+
+      <div className={sc('pulling')}
+           style={{height: translateY}}>
+        {translateY >= 100 ?
+          <span className={sc('text')}>释放手指即可更新</span> :
+          <Icon className={sc("icon")} name="arrow-down"/>}
+      </div>
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import './importIcons';
+import './importIcons.ts';
 import './icon.scss';
 import {classes} from '../helpers/classes';
+
 
 type IconProps = {
   name: string;
@@ -9,10 +10,10 @@ type IconProps = {
 
 const Icon: React.FunctionComponent<IconProps> = ({className, name, ...restProps}) => {
   return (<>
-        <svg className={classes(`xue-icon`, className)} {...restProps}>
-            <use xlinkHref={`#${name}`}/>
-        </svg>
-    </>);
+    <svg className={classes(`xue-icon`, className)} {...restProps}>
+      <use xlinkHref={`#${name}`}/>
+    </svg>
+  </>);
 };
 export default Icon;
 
