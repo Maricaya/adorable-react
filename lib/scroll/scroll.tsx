@@ -14,6 +14,7 @@ const sc = scopedClass;
 const Scroll: React.FunctionComponent<Props> = (props) => {
   const {children, ...rest} = props;
   const [barHeight, setBarHeight] = useState(0);
+  const [barVisible, setBarVisible] = useState(false);
   const [barTop, _setBarTop] = useState(0);
 
   const setBarTop = (number: number) => {
@@ -26,11 +27,20 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
     _setBarTop(number);
   };
 
+  const timerIdRef = useRef<number | null>(null);
   const onScroll: UIEventHandler = () => {
+    setBarVisible(true);
     const {current} = containerRef;
     const {scrollHeight, scrollTop} = current!;
     const viewHeight = current!.getBoundingClientRect().height;
     setBarTop(scrollTop * viewHeight / scrollHeight);
+    /* 防抖 */
+    if (timerIdRef.current !== null) {
+      window.clearTimeout(timerIdRef.current);
+    }
+    timerIdRef.current = window.setTimeout(() => {
+      setBarVisible(false);
+    }, 300);
   };
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -48,12 +58,9 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
     draggingRef.current = true;
     firstYRef.current = e.clientY;
     firstBarTopRef.current = barTop;
-    // 内容修改
-    // containerRef.current.scrollTop =
   };
   const onMouseMoveBar = (e: MouseEvent) => {
     if (draggingRef.current) {
-      // const {current} = ;
       const {scrollHeight} = containerRef.current!;
       const delta = e.clientY - firstYRef.current;
       const newBarTop = firstBarTopRef.current + delta;
@@ -91,15 +98,16 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
            onScroll={onScroll}>
         {children}
       </div>
-      <div className={sc('track')}>
+      {barVisible && <div className={sc('track')}>
         {/* 不使用 top，使用 transform */}
         <div className={sc('bar')}
              style={{height: barHeight, transform: `translateY(${barTop}px)`}}
              onMouseDown={onMouseDownBar}
         />
-      </div>
+      </div>}
     </div>
   );
 };
+
 
 export default Scroll;
