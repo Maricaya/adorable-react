@@ -6,7 +6,9 @@ import {UIEventHandler, MouseEventHandler, TouchEventHandler} from 'react';
 import {scopedClassMaker} from '../helpers/classes';
 import {Icon} from '../../lib';
 
-type Props = {} & HTMLAttributes<HTMLDivElement>
+type Props = {
+  onPull?: () => void;
+} & HTMLAttributes<HTMLDivElement>
 
 const scopedClass = scopedClassMaker('xue-scroll');
 const sc = scopedClass;
@@ -117,7 +119,11 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
     lastYRef.current = e.touches[0].clientY;
   };
   const onTouchEnd: TouchEventHandler = () => {
-    setTranslateY(0);
+    if (pulling.current) {
+      props.onPull && props.onPull();
+      setTranslateY(0);
+      pulling.current = false;
+    }
   };
   return (
     <div className={sc('')} {...rest}>
