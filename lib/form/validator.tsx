@@ -65,6 +65,8 @@ const Validator: (formValue: FormValue, rules: FormRules, callback: (errors: any
       const promise = promiseOrString instanceof Promise ? promiseOrString : Promise.reject(promiseOrString);
       return promise.then(() => [key, undefined], (reason) => [key, reason]);
     });
+  // type fish 类型守卫
+  // boolean must be a type predicate
   const hasError = (item: [string, undefined] | [string, string]): item is [string, string] =>
     typeof item[1] === 'string';
   Promise.all(newPromises).then(results => {
