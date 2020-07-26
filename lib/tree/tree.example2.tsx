@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Tree} from '../index';
 import {useState} from 'react';
 
-const TreeExample: React.FC = () => {
+const TreeExample2: React.FC = () => {
   const [array] = useState([
     {
       text: '1',
@@ -23,21 +23,20 @@ const TreeExample: React.FC = () => {
       ]
     }
   ]);
-  // const [selectedValues, setSelectedValues] = useState(['2.1']);
-  const [selectedValue, setSelectedValue] = useState('1');
+  const [selectedValues, setSelectedValues] = useState<string[]>(['2.1']);
   return (
     <div>
       Tree
-      <h1>展示数据</h1>
+      <h1>example 多选</h1>
       <div style={{width: 200}}>
         <Tree sourceData={array}
-              selected={selectedValue}
-              onChange={(selected) => setSelectedValue(selected)}
-              multiple={false}
+              selected={selectedValues}
+              onChange={(selected) => setSelectedValues(selected)}
+              multiple={true}
         />
       </div>
     </div>
   );
 };
 
-export default TreeExample;
+export default TreeExample2;

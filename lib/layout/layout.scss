@@ -6,7 +6,7 @@
   &.xue-layout-hasAside {
     flex-direction: row;
     .xue-layout {
-      flex-direction: column;
+      //flex-direction: column;
     }
   }
   &-content {
@@ -14,6 +14,6 @@
   }
   & &{
     flex-grow: 1;
-    flex-direction: row;
+    //flex-direction: row;
   }
 }
