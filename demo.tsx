@@ -1,4 +1,5 @@
 import * as React from 'react';
+// import Highlight, {defaulProps} from 'prism-react-render';
 
 type Props = {
   code: string;
