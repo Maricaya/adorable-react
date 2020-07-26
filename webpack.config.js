@@ -24,15 +24,6 @@ module.exports = {
       },
       {
         test: /\.s([ac])ss$/,
-        // 从右向左的顺序,webpack 中loader的原则 一个loader只做一件事情
-        // sass-loader icon.scss -> icon.css
-        // css-loader  icon.css -> 对象
-
-        // style-loader 对象 -> <style>css</style>
-        // document.createElement('style')
-        // .innerHtml = 'css'
-        // document.head.appendChild(style)
-
         use: [
           'style-loader',
           'css-loader',

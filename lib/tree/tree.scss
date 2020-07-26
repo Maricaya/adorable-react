@@ -1,0 +1,44 @@
+.xue-tree {
+  &-item {
+    border: 1px solid;
+    line-height: 1.5;
+  }
+
+  &-text {
+    display: block;
+    &:hover {
+      background: tan;
+    }
+  }
+
+  &-level-1 {
+    .xue-tree-text {
+      padding-left: 0;
+    }
+  }
+
+  &-level-2 {
+    .xue-tree-text {
+      padding-left: 2em;
+    }
+  }
+
+  &-level-3 {
+    .xue-tree-text {
+      padding-left: 3em;
+    }
+  }
+
+  &-level-4 {
+    .xue-tree-text {
+      padding-left: 4em;
+    }
+  }
+  &-children {
+    overflow: hidden;
+    transition: height 200ms;
+    &-gone {
+      height: 0;
+    }
+  }
+}
