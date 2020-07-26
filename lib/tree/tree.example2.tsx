@@ -28,6 +28,7 @@ const TreeExample2: React.FC = () => {
     <div>
       Tree
       <h1>example 多选</h1>
+      展示数据 {selectedValues.join(',  ')}
       <div style={{width: 200}}>
         <Tree sourceData={array}
               selected={selectedValues}

@@ -7,7 +7,8 @@ import {useUpdate} from '../hooks/useUpdate';
 type Props = {
   item: SourceDataItem,
   level: number,
-  treeProps: TreeProps
+  treeProps: TreeProps,
+  onItemChange: (values: string[]) => void
 }
 
 const scopedClass = scopedClassMaker('xue-tree');
@@ -22,7 +23,7 @@ const TreeItem: React.FC<Props> = (props) => {
     const checked = treeProps.multiple ? treeProps.selected.indexOf(item.value) >= 0 : treeProps.selected === item.value;
 
     function collectChildrenValues(item: SourceDataItem): string[] {
-      return flattern(item.children?.map(i => [i.value, collectChildrenValues(i)]));
+      return flatten(item.children?.map(i => [i.value, collectChildrenValues(i)]));
     }
 
     type RecursiveArray<K> = Array<K | RecursiveArray<K>>
@@ -30,15 +31,15 @@ const TreeItem: React.FC<Props> = (props) => {
     // 包含字符串的数组,或者 包含了字符串的数组的数组
     // interface RecursiveArray<T> extends Array<T |RecursiveArray<T>>{}
     // 深度优先
-    function flattern(array?:RecursiveArray<string>): string[] {
-      if (!array) return []
-      return array.reduce<string[]>((result,current) =>
-         result.concat(typeof current === 'string' ? current : flattern(current))
-      ,[])
+    function flatten(array?: RecursiveArray<string>): string[] {
+      if (!array) return [];
+      return array.reduce<string[]>((result, current) =>
+          result.concat(typeof current === 'string' ? current : flatten(current))
+        , []);
       // const result = [];
       // for (let i=0;i<array.length;i++) {
       //   if(array[i] instanceof Array) {
-      //     result.push(...flattern(array[i] as RecursiveArray<string>))
+      //     result.push(...flatten(array[i] as RecursiveArray<string>))
       //   } else {
       //     result.push(array[i] as string)
       //   }
@@ -51,9 +52,9 @@ const TreeItem: React.FC<Props> = (props) => {
       const checked = e.target.checked;
       if (treeProps.multiple) {
         if (checked) {
-          treeProps.onChange([...treeProps.selected, item.value, ...childrenValues]);
+          props.onItemChange([...treeProps.selected, item.value, ...childrenValues]);
         } else {
-          treeProps.onChange(treeProps.selected.filter((value: string) =>
+          props.onItemChange(treeProps.selected.filter((value: string) =>
             value !== item.value && childrenValues.indexOf(value) === -1));
         }
       } else {
@@ -103,19 +104,39 @@ const TreeItem: React.FC<Props> = (props) => {
         divRef.current.addEventListener('transitionend', afterCollapse);
       }
     });
+    const expand = () => {setExpanded(true);};
+    const collapse = () => {setExpanded(false);};
 
-    const expand = () => {
-      setExpanded(true);
+    function intersect<T>(array1: T[], array2: T[]): T[] {
+      const result: T[] = [];
+      for (let i = 0; i < array1.length; i++) {
+        if (array2.indexOf(array1[i]) >= 0) {
+          result.push(array1[i]);
+        }
+      }
+      return result;
+    }
+
+    const onItemChange = (values: string[]) => {
+      // 子代被选中全部
+      const childrenValues = collectChildrenValues(item);
+      const common = intersect(values, childrenValues);
+      if (common.length !== 0) {
+        props.onItemChange(Array.from(new Set(values.concat(item.value))));
+        inputRef.current!.indeterminate = common.length !== childrenValues.length;
+      } else {
+        props.onItemChange(values.filter(v => v !== item.value));
+        inputRef.current!.indeterminate = false;
+      }
     };
-    const collapse = () => {
-      setExpanded(false);
-    };
+
+    const inputRef = useRef<HTMLInputElement>(null);
 
     return (
       <div key={props.item.value}
            className={sc(classes)}>
         <label className={sc('text')}>
-          <input type="checkbox"
+          <input ref={inputRef} type="checkbox"
                  onChange={onChange}
                  checked={checked}/>
           {item.text}
@@ -128,7 +149,8 @@ const TreeItem: React.FC<Props> = (props) => {
         </label>
         <div ref={divRef} className={sc({children: true, collapsed: !expanded})}>
           {item.children?.map(sub =>
-            <TreeItem key={sub.value} item={sub} level={level + 1} treeProps={treeProps}/>
+            <TreeItem key={sub.value} item={sub} level={level + 1}
+                      onItemChange={onItemChange} treeProps={treeProps}/>
           )}
         </div>
       </div>
