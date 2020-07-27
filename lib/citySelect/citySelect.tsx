@@ -67,7 +67,8 @@ const Dialog: React.FC<DialogProps> = (props) => {
       {cityList.map(([letter, list]) => {
         return (
           <div key={letter} className={sc('citySection')}>
-            <h4>{letter}</h4>
+            {/* document.querySelector('[data-letter='C']').scrollIntoView() */}
+            <h4 data-letter={letter}>{letter}</h4>
             {list.map(city =>
               <div className={sc('cityName')} key={city}
                    onClick={() => onClick(city)}>{city}</div>
