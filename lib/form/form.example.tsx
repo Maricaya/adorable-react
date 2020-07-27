@@ -30,8 +30,7 @@ const FormExample: React.FunctionComponent = () => {
       checkUserName(username, resolve, () => reject('unique'));
     })
   };
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(e);
+  const onSubmit = () => {
     const rules = [
       {key: 'username', required: true},
       {key: 'username', minLength: 8, maxLength: 16},

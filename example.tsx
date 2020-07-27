@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {HashRouter as Router, Route, NavLink} from 'react-router-dom';
-import IconExample from './lib/icon/icon.example';
 import ButtonExample from './lib/button/button.example';
 import DialogExample from './lib/dialog/dialog.example';
 import LayoutExample from './lib/layout/layout.example';
@@ -17,8 +16,8 @@ import CitySelectDemo from './lib/citySelect/citySelect.demo';
 const logo = require('./logo.jpg');
 
 // 只有require支持自定义加载,!! 表示开启自定义加载
-const x = require('!!raw-loader!./lib/icon/icon.example');
-console.log(logo, x, IconExample);
+// const x = require('!!raw-loader!./lib/icon/icon.example');
+
 // void 'examples 不要改动这一行代码！'; // tslint:disable-line
 
 ReactDOM.render(
