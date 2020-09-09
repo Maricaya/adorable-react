@@ -3,12 +3,13 @@ import Menu from './menu'
 import MenuItem from './menu-item'
 import SubMenu from './sub-menu'
 
-const MenuExample: React.FunctionComponent = () => {
+const MenuExample2: React.FunctionComponent = () => {
   return (
     <div>
       <div>
-        <h1>example 1</h1>
+        <h1>example 2</h1>
         <Menu
+          mode="vertical"
           defaultSelectedKey={'item1'}
         >
           <MenuItem value="item1">Option 1</MenuItem>
@@ -22,4 +23,4 @@ const MenuExample: React.FunctionComponent = () => {
     </div>
   )
 };
-export default MenuExample;
+export default MenuExample2;

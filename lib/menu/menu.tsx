@@ -1,15 +1,16 @@
 import * as React from 'react';
 import {classes, scopedClassMaker} from '../helpers/classes'
 import './menu.scss';
-import {Dispatch, SetStateAction, useState} from 'react'
+import {createContext, Dispatch, HTMLAttributes, SetStateAction, useState} from 'react'
 
 type MenuMode = 'vertical' | 'horizontal' | undefined
 export type Key = string | number
 
 type MenuProps = {
   mode?: MenuMode,
-  defaultSelectedKey: Key,
-} & React.HTMLAttributes<HTMLUListElement>
+  defaultSelectedKey?: Key,
+  defaultExpandKey?: Key[],
+} & HTMLAttributes<HTMLUListElement>
 
 type Context = {
   mode: MenuMode,
@@ -17,7 +18,7 @@ type Context = {
   setSelectedKey: Dispatch<SetStateAction<any>>
 }
 
-export const MenuContext = React.createContext<Context>({
+export const MenuContext = createContext<Context>({
   mode: 'horizontal',
   selectedKey: '',
   setSelectedKey: () => ''
@@ -27,15 +28,17 @@ const scopedClass = scopedClassMaker('xue-menu');
 const sc = scopedClass;
 
 const Menu: React.FC<MenuProps> = (props) => {
-  const { mode, defaultSelectedKey } = props
+  const { mode, defaultSelectedKey, defaultExpandKey } = props
 
   const [selectedKey, setSelectedKey] = useState(defaultSelectedKey);
+  const [expandedKey, setExpandedKey] = useState(defaultExpandKey);
 
   return (
     <MenuContext.Provider value={
       {
         mode,
-        selectedKey, setSelectedKey
+        selectedKey, setSelectedKey,
+        expandedKey, setExpandedKey
       }
     }>
       <ul className={classes(sc(''), mode)}>

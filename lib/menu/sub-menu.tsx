@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Key, MenuContext} from './menu'
 import {classes, scopedClassMaker} from '../helpers/classes'
-import {useContext, useRef} from 'react'
+import {Children, HTMLAttributes, ReactElement, ReactEventHandler, useContext, useRef} from 'react'
 import Icon from '../icon/icon'
 import {MenuItemProps} from './menu-item'
 
@@ -11,26 +11,22 @@ type MenuSubProps = {
   title: string,
   itemGroup?: boolean,
   showArrow?: boolean,
-} & React.HTMLAttributes<HTMLLIElement>
+} & HTMLAttributes<HTMLLIElement>
 
 const scopedClass = scopedClassMaker('xue-submenu');
 const sc = scopedClass;
 
 const SubMenu: React.FC<MenuSubProps> = (props) => {
-  const { value, expandKeys, itemGroup, title, showArrow } = props
-  const { mode, selectedKey, setSelectedKey } = useContext(MenuContext);
-  const childrenKeys = ['']
-  // const childrenKeys = useRef<Array<Key>>(
-  //   React.Children.map(chlidren, () => {
-    // })
-    //   .filter(item => {
-    //     console.log(item)
-    //       return true
-    //   })
-    //   .map((item, index) => item.props.value || `item-${index}`)
-  // );
-  // console.log(, childrenKeys.current)
-  const onClick: React.ReactEventHandler = (e) => {
+  const { value, expandKeys, itemGroup, title, showArrow, children } = props
+  const { mode, selectedKey } = useContext(MenuContext);
+
+  const childrenKeys = useRef<Array<Key>>([]);
+  Children.map(children, (child: ReactElement<MenuItemProps>, index: number) => {
+    const uniqueKey = child.props.value || `item-${index}`;
+    childrenKeys.current.push(uniqueKey);
+  })
+
+  const onClick: ReactEventHandler = (e) => {
     if (!itemGroup) {
       // handleExpankes
     }
@@ -45,8 +41,8 @@ const SubMenu: React.FC<MenuSubProps> = (props) => {
       )
     }>
       <div className={classes(sc('title'), mode,
-         expandKeys!.indexOf(value) > -1 ? 'active': '',
-       childrenKeys!.current.indexOf(selectedKey) > -1 ? 'child-selected' : ''
+        expandKeys!.indexOf(value) > -1 ? 'active': '',
+        childrenKeys.current.indexOf(selectedKey as string) > -1 ? 'child-selected' : ''
       )} onClick={onClick}>
         {title}
         {showArrow && (
