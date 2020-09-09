@@ -1,7 +1,5 @@
 import * as React from 'react';
-import Menu from './menu'
-import MenuItem from './menu-item'
-import SubMenu from './sub-menu'
+import {Menu, MenuItem, SubMenu} from '../index'
 
 const MenuExample: React.FunctionComponent = () => {
   return (

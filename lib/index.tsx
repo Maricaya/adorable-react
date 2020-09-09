@@ -4,4 +4,7 @@ export {default as Layout, Aside, Content, Footer, Header} from './layout/layout
 export {default as Form} from './form/form';
 export {default as Scroll} from './scroll/scroll';
 export {default as Tree} from './tree/tree';
-export {default as menu} from './menu/menu';
+export {default as Menu} from './menu/menu';
+export {default as MenuItem} from './menu/menu-item';
+export {default as SubMenu} from './menu/sub-menu';
+export {default as Unfold} from './transition/unfold';

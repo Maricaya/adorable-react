@@ -13,6 +13,7 @@ import ScrollDemo from './lib/scroll/scroll.demo';
 import TreeDemo from './lib/tree/tree.demo';
 import CitySelectDemo from './lib/citySelect/citySelect.demo';
 import MenuDemo from './lib/menu/menu.demo'
+import UnfoldDemo from './lib/transition/unfold.demo'
 
 const logo = require('./logo.jpg');
 
@@ -44,6 +45,7 @@ ReactDOM.render(
             <li><NavLink to="/tree">Tree 树形控件</NavLink></li>
             <li><NavLink to="/citySelect">CitySelect 城市选择</NavLink></li>
             <li><NavLink to="/menu">menu 菜单栏</NavLink></li>
+            <li><NavLink to="/unfold">unfold transition</NavLink></li>
           </ul>
         </Aside>
         <Content className="site-main">
@@ -57,6 +59,7 @@ ReactDOM.render(
           <Route path="/tree" component={TreeDemo}/>
           <Route path="/citySelect" component={CitySelectDemo}/>
           <Route path="/menu" component={MenuDemo}/>
+          <Route path="/unfold" component={UnfoldDemo}/>
         </Content>
       </Layout>
       <Footer className="site-footer">
