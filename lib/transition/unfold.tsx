@@ -1,6 +1,10 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {CSSProperties, StyleHTMLAttributes, useCallback, useEffect, useRef} from 'react'
+import {
+  CSSProperties,
+  TransitionEventHandler,
+  useEffect,
+  useRef
+} from 'react'
 
 type TransitionEffect = {
   vertical: string,
@@ -19,8 +23,8 @@ type LeaveTo = {
 }
 
 type PrevSize = {
-  width: number | null,
-  height: number | null
+  width: string | null,
+  height: string | null
 }
 
 const Unfold: React.FC<UnfoldProps> = (props) => {
@@ -45,7 +49,7 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
       width: '0'
     }
   })
-  const prevCssProp = useRef<CSSProperties | {}>({
+  const prevCssProp = useRef({
     paddingLeft: '',
     paddingRight: '',
     paddingTop: '',
@@ -59,19 +63,12 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
     overflowX: '',
     overflowY: '',
     overflow: ''
-  })
+  });
   const prevSize = useRef<PrevSize>({
     width: null,
     height: null
-  })
-  const node = useRef<HTMLElement>()
-  // const addTransitionListener = useCallback(() => {
-  //   if (ReactDOM.findDOMNode(this)) {
-  //     return;
-  //   }
-  //   node.current = ReactDOM.findDOMNode(this) as HTMLElement;
-    // node.current.addEventListener()
-  // })
+  });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     transitionEffect.current = {
@@ -84,18 +81,75 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
       ${transitionTime}s padding-left cubic-bezier(.645, .045, .355, 1), 
       ${transitionTime}s padding-right cubic-bezier(.645, .045, .355, 1)`
     }
-
   }, [])
 
+  const setNodeStyle = (cssProp: object) => {
+    Object.keys(cssProp).map((key) => {
+      // @ts-ignore
+      containerRef.current!.style[key] = cssProp[key]
+    })
+  }
+
+  const getNodeSize = (node: HTMLDivElement) => {
+    const display = node.style.display
+    if (display === 'none') {
+      node.style.display = ''
+    }
+    const { top, left, right, bottom } = node.getBoundingClientRect()
+    const rectWidth = right - left
+    const rectHeight = bottom - top
+    const {
+      paddingLeft,
+      paddingRight,
+      paddingTop,
+      paddingBottom,
+      borderTopWidth,
+      borderBottomWidth,
+      borderLeftWidth,
+      borderRightWidth,
+      width,
+      height,
+      overflowX,
+      overflowY,
+      overflow
+    } = node.style
+    if (display === 'none') {
+      node.style.display = display
+    }
+    prevCssProp.current = {
+      paddingLeft,
+      paddingRight,
+      paddingTop,
+      paddingBottom,
+      borderTopWidth,
+      borderBottomWidth,
+      borderLeftWidth,
+      borderRightWidth,
+      width: width || rectWidth + 'px',
+      height: height || rectHeight + 'px',
+      overflowX,
+      overflowY,
+      overflow
+    }
+    prevSize.current = {
+      width,
+      height
+    }
+  }
+
+  const handleTransitionEnd: TransitionEventHandler = (e) => {
+    const {overflowX, overflowY, overflow} = prevCssProp.current
+    const {width, height} = prevSize.current
+    setNodeStyle({overflowX, overflowY, overflow, width, height})
+  };
 
   return (
-    <>
-    {
-      visible && <div>
-        {props.children}
-      </div>
-    }
-    </>
+    <div
+      ref={containerRef}
+      onTransitionEnd={handleTransitionEnd}
+    >
+      {props.children}
+    </div>
   );
 };
 
