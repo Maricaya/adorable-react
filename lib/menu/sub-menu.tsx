@@ -4,10 +4,10 @@ import {classes, scopedClassMaker} from '../helpers/classes'
 import {Children, HTMLAttributes, ReactElement, ReactEventHandler, useContext, useRef} from 'react'
 import Icon from '../icon/icon'
 import {MenuItemProps} from './menu-item'
+import {Unfold} from '../index'
 
 type MenuSubProps = {
   value: Key,
-  expandKeys: Array<Key>,
   title: string,
   itemGroup?: boolean,
   showArrow?: boolean,
@@ -17,18 +17,20 @@ const scopedClass = scopedClassMaker('xue-submenu');
 const sc = scopedClass;
 
 const SubMenu: React.FC<MenuSubProps> = (props) => {
-  const { value, expandKeys, itemGroup, title, showArrow, children } = props
-  const { mode, selectedKey } = useContext(MenuContext);
+  const { value, itemGroup, title, showArrow, children } = props
+  const { mode, selectedKey, openKeys, enableOpenKeys } = useContext(MenuContext);
 
   const childrenKeys = useRef<Array<Key>>([]);
   Children.map(children, (child: ReactElement<MenuItemProps>, index: number) => {
-    const uniqueKey = child.props.value || `item-${index}`;
-    childrenKeys.current.push(uniqueKey);
+    const uniqueKey = child.props.value;
+    childrenKeys.current!.push(uniqueKey);
   })
-
   const onClick: ReactEventHandler = (e) => {
-    if (!itemGroup) {
-      // handleExpankes
+    if (openKeys.indexOf(value) === -1) {
+      enableOpenKeys(openKeys.concat([value]))
+    }
+    else {
+      enableOpenKeys(openKeys.filter((i) => i != value))
     }
   }
 
@@ -36,13 +38,13 @@ const SubMenu: React.FC<MenuSubProps> = (props) => {
     <li className={
       classes(
         sc(''),
-        expandKeys.indexOf(value) > -1 ? 'active': '',
+        openKeys.indexOf(value) > -1 ? 'active': '',
         itemGroup ? 'itemGroup' : ''
       )
     }>
       <div className={classes(sc('title'), mode,
-        expandKeys!.indexOf(value) > -1 ? 'active': '',
-        childrenKeys.current.indexOf(selectedKey as string) > -1 ? 'child-selected' : ''
+        openKeys.indexOf(value) > -1 ? 'active': '',
+        childrenKeys.current!.indexOf(selectedKey as string) > -1 ? 'child-selected' : ''
       )} onClick={onClick}>
         {title}
         {showArrow && (
@@ -51,9 +53,14 @@ const SubMenu: React.FC<MenuSubProps> = (props) => {
           </span>
         )}
       </div>
-      <ul className={classes(sc('children-wrapper'))}>
-        {props.children}
-      </ul>
+      <Unfold
+        vertical={true}
+        visible={openKeys.indexOf(value) > -1 || itemGroup!}
+      >
+        <ul className={classes(sc('children-wrapper'))}>
+          {props.children}
+        </ul>
+      </Unfold>
     </li>
   );
 };

@@ -170,7 +170,6 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
         transition: transitionEffect.current.vertical,
         ...leaveTo.current.vertical
       })
-      console.log(transitionEffect.current.vertical)
     } else {
       setNodeStyle({
         transition: '',
@@ -243,12 +242,12 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
     }
   }
 
+  const mounted = useRef(false);
   useEffect(() => {
-    if (visible) {
-      showNode()
-    } else if (!visible) {
-      console.log("can't visible")
-      hideNode()
+    if (!mounted.current) {
+      mounted.current = true
+    } else {
+      visible ? showNode() : hideNode()
     }
   }, [visible])
 

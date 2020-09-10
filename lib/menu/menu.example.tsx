@@ -8,10 +8,11 @@ const MenuExample: React.FunctionComponent = () => {
         <h1>example 1</h1>
         <Menu
           defaultSelectedKey={'item1'}
+          defaultOpenKeys={['item4']}
         >
           <MenuItem value="item1">Option 1</MenuItem>
           <MenuItem value="item2">Option 2</MenuItem>
-          <SubMenu value="sub" title="SubMenu" expandKeys={['item4']}>
+          <SubMenu value="sub1" title="SubMenu">
             <MenuItem value="item4">Option 4</MenuItem>
             <MenuItem value="item5">Option 5</MenuItem>
           </SubMenu>
