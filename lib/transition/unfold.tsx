@@ -1,20 +1,15 @@
 import * as React from 'react';
-import {
-  CSSProperties,
-  TransitionEventHandler,
-  useEffect,
-  useRef
-} from 'react'
-
-type TransitionEffect = {
-  vertical: string,
-  horizontal: string
-}
+import { CSSProperties, TransitionEventHandler, useEffect, useRef} from 'react'
 
 type UnfoldProps = {
   visible: boolean,
   transitionTime?: number,
   vertical?: boolean
+}
+
+type TransitionEffect = {
+  vertical: string,
+  horizontal: string
 }
 
 type LeaveTo = {
@@ -27,8 +22,10 @@ type PrevSize = {
   height: string | null
 }
 
+type NodeDisplay = string
+
 const Unfold: React.FC<UnfoldProps> = (props) => {
-  const {visible, transitionTime} = props
+  const {visible, transitionTime, vertical} = props
   const transitionEffect = useRef<TransitionEffect>({
     vertical: '',
     horizontal: ''
@@ -69,28 +66,9 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
     height: null
   });
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    transitionEffect.current = {
-      vertical: `
-      ${transitionTime}s height cubic-bezier(.645, .045, .355, 1), 
-      ${transitionTime}s padding-top cubic-bezier(.645, .045, .355, 1), 
-      ${transitionTime}s padding-bottom cubic-bezier(.645, .045, .355, 1)`,
-      horizontal: `
-      ${transitionTime}s width cubic-bezier(.645, .045, .355, 1), 
-      ${transitionTime}s padding-left cubic-bezier(.645, .045, .355, 1), 
-      ${transitionTime}s padding-right cubic-bezier(.645, .045, .355, 1)`
-    }
-  }, [])
-
-  const setNodeStyle = (cssProp: object) => {
-    Object.keys(cssProp).map((key) => {
-      // @ts-ignore
-      containerRef.current!.style[key] = cssProp[key]
-    })
-  }
-
-  const getNodeSize = (node: HTMLDivElement) => {
+  const nodeDisplay = useRef<NodeDisplay>('block')
+  const getNodeSize = () => {
+    const node = containerRef.current!
     const display = node.style.display
     if (display === 'none') {
       node.style.display = ''
@@ -137,10 +115,150 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
     }
   }
 
-  const handleTransitionEnd: TransitionEventHandler = (e) => {
+  useEffect(() => {
+    getNodeSize();
+    transitionEffect.current = {
+      vertical: `
+      ${transitionTime}ms height cubic-bezier(.645, .045, .355, 1), 
+      ${transitionTime}ms padding-top cubic-bezier(.645, .045, .355, 1), 
+      ${transitionTime}ms padding-bottom cubic-bezier(.645, .045, .355, 1)`,
+      horizontal: `
+      ${transitionTime}ms width cubic-bezier(.645, .045, .355, 1), 
+      ${transitionTime}ms padding-left cubic-bezier(.645, .045, .355, 1), 
+      ${transitionTime}ms padding-right cubic-bezier(.645, .045, .355, 1)`
+    }
+  }, [])
+  const setNodeStyle = (cssProp: object) => {
+    Object.keys(cssProp).map((key) => {
+      // @ts-ignore
+      containerRef.current!.style[key] = cssProp[key]
+    })
+  }
+  const hideNode = () => {
+    const node = containerRef.current!
+    // 关闭时先获取最新的 node 数据
+    getNodeSize()
+    const {
+      paddingLeft,
+      paddingRight,
+      paddingTop,
+      paddingBottom,
+      borderTopWidth,
+      borderBottomWidth,
+      borderLeftWidth,
+      borderRightWidth,
+      width,
+      height
+    } = prevCssProp.current
+    nodeDisplay.current = node.style.display
+    node.style.overflowX = 'hidden'
+    node.style.overflowY = 'hidden'
+    node.style.overflow = 'hidden'
+    if (vertical) {
+      setNodeStyle({
+        transition: '',
+        paddingTop,
+        paddingBottom,
+        borderTopWidth,
+        borderBottomWidth,
+        width,
+        height
+      })
+      // enforce repaint
+      node.getBoundingClientRect()
+      setNodeStyle({
+        transition: transitionEffect.current.vertical,
+        ...leaveTo.current.vertical
+      })
+      console.log(transitionEffect.current.vertical)
+    } else {
+      setNodeStyle({
+        transition: '',
+        paddingLeft,
+        paddingRight,
+        borderLeftWidth,
+        borderRightWidth,
+        width,
+        height
+      })
+      // enforce repaint
+      node.getBoundingClientRect()
+      setNodeStyle({
+        transition: transitionEffect.current.horizontal,
+        ...leaveTo.current.horizontal
+      })
+    }
+  }
+
+  const showNode = () => {
+    const {
+      paddingLeft,
+      paddingRight,
+      paddingTop,
+      paddingBottom,
+      borderTopWidth,
+      borderBottomWidth,
+      borderLeftWidth,
+      borderRightWidth,
+      width,
+      height
+    } = prevCssProp.current
+
+    containerRef.current!.style.display = nodeDisplay.current
+    containerRef.current!.style.overflowX = 'hidden'
+    containerRef.current!.style.overflowY = 'hidden'
+    containerRef.current!.style.overflow = 'hidden'
+    if (vertical) {
+      setNodeStyle({
+        transition: '',
+        ...leaveTo.current.vertical
+      })
+      // enforce repaint
+      containerRef.current!.getBoundingClientRect()
+      setNodeStyle({
+        transition: transitionEffect.current.vertical,
+        paddingTop,
+        paddingBottom,
+        borderTopWidth,
+        borderBottomWidth,
+        height,
+        width
+      })
+    } else {
+      setNodeStyle({
+        transition: '',
+        ...leaveTo.current.horizontal
+      })
+      // enforce repaint
+      containerRef.current!.getBoundingClientRect()
+      setNodeStyle({
+        transition: transitionEffect.current.horizontal,
+        paddingLeft,
+        paddingRight,
+        borderLeftWidth,
+        borderRightWidth,
+        height,
+        width
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (visible) {
+      showNode()
+    } else if (!visible) {
+      console.log("can't visible")
+      hideNode()
+    }
+  }, [visible])
+
+  const handleTransitionEnd: TransitionEventHandler = () => {
     const {overflowX, overflowY, overflow} = prevCssProp.current
     const {width, height} = prevSize.current
     setNodeStyle({overflowX, overflowY, overflow, width, height})
+    if (!visible) {
+      containerRef.current!.style.display = 'none'
+    }
   };
 
   return (
@@ -152,6 +270,11 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
     </div>
   );
 };
+
+Unfold.defaultProps = {
+  transitionTime: 250,
+  vertical: true
+}
 
 export default Unfold;
 

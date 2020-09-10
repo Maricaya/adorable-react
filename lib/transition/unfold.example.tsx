@@ -3,9 +3,10 @@ import {useState} from 'react'
 import {Button, Unfold} from '../index'
 
 const UnFoldExample: React.FC = () => {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(true)
 
   const onClick = () => {
+    console.log(1)
     setVisible(!visible)
   }
 
@@ -19,6 +20,3 @@ const UnFoldExample: React.FC = () => {
   )
 }
 export default UnFoldExample
-
-
-
