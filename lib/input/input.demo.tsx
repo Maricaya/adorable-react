@@ -1,6 +1,6 @@
-import Demo from '../../demo';
 import React from 'react';
 import InputExample from './input.example';
+import {Demo} from '../../site/components'
 
 const x = require('!!raw-loader!./input.example');
 

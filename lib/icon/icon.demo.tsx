@@ -1,4 +1,4 @@
-import Demo from '../../demo';
+import Demo from '../../site/components/demo/demo';
 import React from 'react';
 import IconExample from './icon.example';
 

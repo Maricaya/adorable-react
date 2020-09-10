@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { CSSProperties, TransitionEventHandler, useEffect, useRef} from 'react'
+import {CSSProperties, HTMLAttributes, TransitionEventHandler, useEffect, useRef} from 'react'
+import {useUpdate} from '../hooks/useUpdate'
 
 type UnfoldProps = {
   visible: boolean,
   transitionTime?: number,
   vertical?: boolean
-}
+} & HTMLAttributes<HTMLDivElement>
 
 type TransitionEffect = {
   vertical: string,
@@ -25,7 +26,7 @@ type PrevSize = {
 type NodeDisplay = string
 
 const Unfold: React.FC<UnfoldProps> = (props) => {
-  const {visible, transitionTime, vertical} = props
+  const {visible, transitionTime, vertical, ...rest} = props
   const transitionEffect = useRef<TransitionEffect>({
     vertical: '',
     horizontal: ''
@@ -241,15 +242,9 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
       })
     }
   }
-
-  const mounted = useRef(false);
-  useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true
-    } else {
-      visible ? showNode() : hideNode()
-    }
-  }, [visible])
+  useUpdate(visible, () => {
+    visible ? showNode() : hideNode()
+  })
 
   const handleTransitionEnd: TransitionEventHandler = () => {
     const {overflowX, overflowY, overflow} = prevCssProp.current
@@ -262,6 +257,7 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
 
   return (
     <div
+      {...rest}
       ref={containerRef}
       onTransitionEnd={handleTransitionEnd}
     >

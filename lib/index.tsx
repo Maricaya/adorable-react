@@ -7,4 +7,5 @@ export {default as Tree} from './tree/tree';
 export {default as Menu} from './menu/menu';
 export {default as MenuItem} from './menu/menu-item';
 export {default as SubMenu} from './menu/sub-menu';
+export {default as MenuGroup} from './menu/menu-group';
 export {default as Unfold} from './transition/unfold';

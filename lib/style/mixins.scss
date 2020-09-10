@@ -15,11 +15,36 @@ $brand:#1890ff;
 $click:#096dd9;
 $shadow:0 2px 8px rgba(0, 0, 0, .15);
 
-// disabled
-// color: rgba(0, 0, 0, 0.25);
-// border-color: #d9d9d9;
-// background-color: #e6e6e6;
-// transition: all .3s cubic-bezier(.645, .045, .355, 1);
-// hover bg #e6f7ff
+$lu-green: #56aa1c;
+$lu-blue: #008be1;
+$lu-yellow: #ffcf00;
+$lu-orange: #ff6600;
+$lu-red: #cc0000;
 
-// modal 100
+$lu-green-highlight: lighten($lu-green, 10%);
+$lu-blue-highlight: lighten($lu-blue, 10%);
+$lu-yellow-highlight: lighten($lu-yellow, 10%);
+$lu-orange-highlight: lighten($lu-orange, 10%);
+$lu-red-highlight: lighten($lu-red, 10%);
+
+$lu-green-shade: darken($lu-green, 10%);
+$lu-blue-shade: darken($lu-blue, 10%);
+$lu-yellow-shade: darken($lu-yellow, 10%);
+$lu-orange-shade: darken($lu-orange, 10%);
+$lu-red-shade: darken($lu-red, 10%);
+
+$lu-title: #262626;
+$lu-main: #595959;
+$lu-secondary: #8c8c8c;
+$lu-disabled: #bfbfbf;
+$lu-border: #d9d9d9;
+$lu-divider: #f0f0f0;
+
+$lu-background: #f5f5f5;
+$lu-background-hover: darken($lu-background, 2.5%);
+$lu-background-disabled: darken($lu-background, 5%);
+$lu-background-selected: lighten($lu-blue, 50%);
+$lu-table-header: #fafafa;
+
+$lu-shadow: 0px 1px 5px rgba(0, 0, 0, 0.23921568627451);
+$lu-transition: 250ms cubic-bezier(0.645, 0.045, 0.355, 1);

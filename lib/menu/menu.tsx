@@ -17,7 +17,7 @@ type Context = {
   selectedKey: Key,
   setSelectedKey: Dispatch<SetStateAction<any>>,
   openKeys: Key[],
-  enableOpenKeys: Dispatch<SetStateAction<any>>
+  enableOpenKeys: (value: string, b: boolean) => void
 }
 
 export const MenuContext = createContext<Context>({
@@ -32,30 +32,27 @@ const scopedClass = scopedClassMaker('xue-menu');
 const sc = scopedClass;
 
 const Menu: React.FC<MenuProps> = (props) => {
-  const { mode, defaultSelectedKey, defaultOpenKeys } = props;
+  const { mode, defaultSelectedKey, defaultOpenKeys, ...rest } = props;
   const [selectedKey, setSelectedKey] = useState(defaultSelectedKey || '');
 
-  const [openKeys, enableOpenKeys] = useState<Key[]>(defaultOpenKeys || []);
+  const [openKeys, setOpenKeys] = useState<Key[]>(defaultOpenKeys || []);
 
-  // const openKeys = useRef<Key[]>(defaultOpenKeys || []);
-  // const enableOpenKey = (key: Key, enabled: boolean) => {
-  //   if (enabled) {
-  //     if (openKeys.current.indexOf(key) === -1) {
-  //       openKeys.current.push(key)
-  //     }
-  //   }
-  //   else {
-  //     openKeys.current = openKeys.current.filter((i) => i != key)
-  //   }
-  //   console.log('key', key)
-  //   console.log('openKeys', openKeys.current)
-  // }
+  const enableOpenKeys = (key: Key, enabled: boolean) => {
+    if (enabled) {
+      if (openKeys.indexOf(key) === -1) {
+        setOpenKeys(openKeys.concat([key]))
+      }
+    }
+    else {
+      setOpenKeys(openKeys.filter((i) => i != key))
+    }
+  }
 
   return (
     <MenuContext.Provider value={
       {mode: mode!, selectedKey, setSelectedKey, openKeys, enableOpenKeys}
     }>
-      <ul className={classes(sc(''), mode)}>
+      <ul className={classes(sc(''), mode)} {...rest}>
         {props.children}
       </ul>
     </MenuContext.Provider>

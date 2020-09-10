@@ -7,7 +7,7 @@ export type MenuItemProps = {
   value: Key,
 } & React.HTMLAttributes<HTMLLIElement>
 
-const scopedClass = scopedClassMaker('xue-menuitem');
+const scopedClass = scopedClassMaker('xue-menu-item');
 const sc = scopedClass;
 
 const MenuItem: React.FC<MenuItemProps> = (props) => {

@@ -8,6 +8,7 @@ const MenuExample2: React.FunctionComponent = () => {
       <div>
         <h1>example 2</h1>
         <Menu
+          style={{width: 220}}
           mode="vertical"
           defaultSelectedKey={'item1'}
           defaultOpenKeys={['item4']}

@@ -1,0 +1,16 @@
+pre, pre div, pre span {
+  line-height: 1.5;
+  direction: ltr;
+  text-align: left;
+  word-wrap: normal;
+  word-break: normal;
+  word-spacing: normal;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  background: 0 0;
+  font-family: Lucida Console,Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
+  white-space: pre;
+}

@@ -13,51 +13,47 @@ type MenuSubProps = {
   showArrow?: boolean,
 } & HTMLAttributes<HTMLLIElement>
 
-const scopedClass = scopedClassMaker('xue-submenu');
+const scopedClass = scopedClassMaker('xue-sub-menu');
 const sc = scopedClass;
 
 const SubMenu: React.FC<MenuSubProps> = (props) => {
   const { value, itemGroup, title, showArrow, children } = props
-  const { mode, selectedKey, openKeys, enableOpenKeys } = useContext(MenuContext);
+  const { mode, openKeys, enableOpenKeys } = useContext(MenuContext);
 
   const childrenKeys = useRef<Array<Key>>([]);
-  Children.map(children, (child: ReactElement<MenuItemProps>, index: number) => {
+  Children.map(children, (child: ReactElement<MenuItemProps>) => {
     const uniqueKey = child.props.value;
     childrenKeys.current!.push(uniqueKey);
   })
-  const onClick: ReactEventHandler = (e) => {
-    if (openKeys.indexOf(value) === -1) {
-      enableOpenKeys(openKeys.concat([value]))
-    }
-    else {
-      enableOpenKeys(openKeys.filter((i) => i != value))
-    }
+  const onClick: ReactEventHandler = () => {
+    enableOpenKeys(value, openKeys.indexOf(value) === -1)
   }
 
   return (
     <li className={
       classes(
         sc(''),
+        mode,
         openKeys.indexOf(value) > -1 ? 'active': '',
         itemGroup ? 'itemGroup' : ''
       )
     }>
-      <div className={classes(sc('title'), mode,
-        openKeys.indexOf(value) > -1 ? 'active': '',
-        childrenKeys.current!.indexOf(selectedKey as string) > -1 ? 'child-selected' : ''
+      <div className={classes(sc('title'),
+        openKeys.indexOf(value) > -1 ? 'active': ''
       )} onClick={onClick}>
-        {title}
-        {showArrow && (
-          <span className={classes(sc('title-icon-wrapper'))}>
+        <div className={'sub-title'}>{title}
+          {showArrow && (
+            <span className={classes(sc('title-icon-wrapper'))}>
             <Icon name="arrow"/>
           </span>
-        )}
+          )}
+        </div>
       </div>
       <Unfold
         vertical={true}
         visible={openKeys.indexOf(value) > -1 || itemGroup!}
       >
-        <ul className={classes(sc('children-wrapper'))}>
+        <ul className={classes(sc('list'))}>
           {props.children}
         </ul>
       </Unfold>
