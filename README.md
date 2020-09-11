@@ -1,4 +1,4 @@
-# adorable-ui-react(持续更新中) 使用 TypeScript、React Hooks
+# lu-ui-react(持续更新中) 使用 TypeScript、React Hooks
 # 一套好用的 PC 端 React 组件 
 [![GitHub license](https://img.shields.io/github/license/Maricaya/adorable-react)](https://github.com/Maricaya/adorable-react/blob/master/LICENSE)
 [![CircleCI](https://circleci.com/gh/Maricaya/adorable-react.svg?style=svg)](https://app.circleci.com/pipelines/github/Maricaya/adorable-react)
