@@ -27,6 +27,7 @@ type NodeDisplay = string
 
 const Unfold: React.FC<UnfoldProps> = (props) => {
   const {visible, transitionTime, vertical, ...rest} = props
+
   const transitionEffect = useRef<TransitionEffect>({
     vertical: '',
     horizontal: ''
@@ -116,6 +117,7 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
     }
   }
 
+  // onMounted
   useEffect(() => {
     getNodeSize();
     transitionEffect.current = {
@@ -127,6 +129,9 @@ const Unfold: React.FC<UnfoldProps> = (props) => {
       ${transitionTime}ms width cubic-bezier(.645, .045, .355, 1), 
       ${transitionTime}ms padding-left cubic-bezier(.645, .045, .355, 1), 
       ${transitionTime}ms padding-right cubic-bezier(.645, .045, .355, 1)`
+    }
+    if (!visible) {
+      containerRef.current!.style.display = 'none'
     }
   }, [])
   const setNodeStyle = (cssProp: object) => {
